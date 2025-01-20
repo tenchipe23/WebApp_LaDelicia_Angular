@@ -1,0 +1,46 @@
+<app-navbar></app-navbar>
+<div class="d-flex align-items-center justify-content-center vh-100">
+    <div class="card shadow-lg p-4 border-0" style="max-width: 400px; width: 100%;">
+        <h2 class="text-center mb-4 text-warning">Iniciar Sesión</h2>
+        <form id="loginForm">
+            <!-- Campo de Correo Electrónico -->
+            <div class="mb-3">
+                <label for="email" class="form-label fw-bold">Correo Electrónico</label>
+                <input type="email" class="form-control form-control-md" id="email"
+                    placeholder="Ingresa tu correo electrónico" required maxlength="30" />
+            </div>
+
+            <!-- Campo de Contraseña -->
+            <div class="mb-3">
+                <label for="password" class="form-label fw-bold">Contraseña</label>
+                <input type="password" class="form-control form-control-md" id="password"
+                    placeholder="Ingresa tu contraseña" required maxlength="8" />
+            </div>
+
+            <!-- Campo de Usuario -->
+            <div class="mb-3">
+                <label for="usuario" class="form-label fw-bold">Usuario</label>
+                <input type="text" class="form-control form-control-md" id="usuario"
+                    placeholder="Ingresa un nombre de usuario" required maxlength="15" />
+            </div>
+
+            <!-- Checkbox de Recuérdame -->
+            <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="rememberMe" />
+                <label class="form-check-label fw-semibold" for="rememberMe">Recuérdame</label>
+            </div>
+
+            <!-- Botón de Inicio de Sesión -->
+            <div class="d-grid">
+                <button type="submit" class="btn btn-warning btn-md" disabled id="submitBtn">
+                    Iniciar sesión
+                </button>
+            </div>
+        </form>
+        <!-- Enlace de Recuperar Contraseña -->
+        <div class="text-center mt-3">
+            <a routerLink="/forgot-password" class="text-decoration-none text-muted">¿Olvidaste tu contraseña?</a>
+        </div>
+    </div>
+</div>
+<app-footer></app-footer>
