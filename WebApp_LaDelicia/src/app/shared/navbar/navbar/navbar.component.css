@@ -1,0 +1,13 @@
+.navbar-brand img {
+    border-radius: 50%; /* Por ejemplo, para redondear la imagen */
+  }
+  
+  .nav-link.active {
+    font-weight: bold;
+    color: #007bff; /* Color para la opción activa */
+  }
+  
+  .navbar .nav-link {
+    margin-right: 10px;
+  }
+  
