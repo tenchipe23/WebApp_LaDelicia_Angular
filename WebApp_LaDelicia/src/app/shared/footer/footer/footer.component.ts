@@ -26,4 +26,5 @@ export class FooterComponent {
     { platform: 'Facebook', link: 'https://www.facebook.com', iconClass: 'bi2 bi-facebook' },
     { platform: 'Instagram', link: 'https://www.instagram.com', iconClass: 'bi2 bi-instagram' }
   ];
+
 }

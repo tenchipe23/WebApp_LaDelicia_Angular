@@ -38,6 +38,6 @@
     </div>
     <div class="text-center py-3 bg-secondary">
       &copy; 2023 Panadería La Delicia. Todos los derechos reservados.
-      <p>Fotos por: <a href="https://mx.pinterest.com/" target="_blank">Pinterest</a></p>
+      <p>Fotos por: <a [href]="picturesBy[0].link" ] target="_blank">Pinterest</a></p>
     </div>
   </footer>

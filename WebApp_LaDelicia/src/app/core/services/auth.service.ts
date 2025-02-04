@@ -12,7 +12,7 @@ export class AuthService {
 
   login(identifier: string, password: string): Observable<any> {
     // Simulación de credenciales y roles
-    if (identifier === 'admin' && password === 'password123') {
+    if (identifier === 'carlos123@gmail.com' || identifier === 'carlos' && password === 'carloship123') {
       const mockResponse = {
         token: 'fake-jwt-token',
         user: { id: 1, username: 'admin', roles: ['admin'] },

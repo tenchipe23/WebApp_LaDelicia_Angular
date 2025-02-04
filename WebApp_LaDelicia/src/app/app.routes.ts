@@ -18,7 +18,7 @@ export const routes: Routes = [
     { path: 'about', component: AboutUsComponent },
     { path: 'contact', component: ContactusComponent },
     { path: 'products', component: ProductsComponent },
-    { path: 'forgot-password', component: ForgotPasswordComponent, canActivate: [authGuard], data: { role: 'admin' } },
+    { path: 'forgot-password', component: ForgotPasswordComponent },
     {
         path: 'control-panel',
         canActivate: [authGuard], // Protección para toda la sección
