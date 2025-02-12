@@ -1,0 +1,44 @@
+/* Fondo general del formulario */
+form {
+    background-color: #ffffff;
+    border: 1px solid #eaeaea;
+    border-radius: 8px;
+  }
+  
+  /* Títulos y etiquetas */
+  form .form-label {
+    font-weight: bold;
+    color: #333;
+  }
+  
+  /* Inputs y textarea */
+  form .form-control {
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  /* Inputs al hacer focus */
+  form .form-control:focus {
+    border-color: #ffc107;
+    box-shadow: 0 0 5px rgba(255, 193, 7, 0.5);
+  }
+  
+  /* Botón de envío */
+  form .btn {
+    background-color: #ffc107;
+    border: none;
+    font-size: 1rem;
+  }
+  
+  form .btn:hover {
+    background-color: #e6ac00;
+    color: #fff;
+  }
+  
+  /* Iframe (Google Maps) */
+  iframe {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+  }
+  

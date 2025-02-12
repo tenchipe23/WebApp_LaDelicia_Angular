@@ -1,0 +1,60 @@
+<app-navbar></app-navbar>
+
+<div class="container-fluid vh-100 d-flex align-items-center justify-content-center mt-5">
+  <div class="row w-80 shadow-lg rounded overflow-hidden mt-5">
+    <div class="col-md-6 p-0">
+      <div class="image-container position-relative">
+        <img src="assets/images/login-side-image.png" alt="Bienvenido a La Delicia" class="w-100 h-100 object-fit-cover">
+        <div class="overlay"></div>
+      </div>
+    </div>
+
+    <!-- Columna Derecha: Formulario de Inicio de Sesión -->
+    <div class="col-md-6 p-5 bg-white mt-5">
+      <h2 class="text-center mb-5 text-dark">Iniciar Sesión</h2>
+
+      <form [formGroup]="loginForm" (ngSubmit)="login()">
+        <div class=" mb-3">
+          <label for="identifier" class="form-label fw-bold">Correo Electrónico o Nombre de Usuario</label>
+          <input type="text" class="form-control form-control-md" formControlName="identifier"
+                 placeholder="Ingresa tu correo electrónico" id="identifier"/>
+          <div *ngIf="loginForm.get('identifier')?.invalid && loginForm.get('identifier')?.touched">
+            <small class="text-danger" *ngIf="loginForm.get('identifier')?.hasError('required')">Este campo es obligatorio.</small>
+            <small class="text-danger" *ngIf="loginForm.get('identifier')?.hasError('minLength')">Debe tener al menos 5 caracteres.</small>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="password" class="form-label fw-bold">Contraseña</label>
+          <input type="password" class="form-control form-control-md" formControlName="password"
+                 placeholder="Ingresa tu contraseña" id="password"/>
+          <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+            <small class="text-danger" *ngIf="loginForm.get('password')?.hasError('required')">Este campo es obligatorio.</small>
+            <small class="text-danger" *ngIf="loginForm.get('password')?.hasError('minLength')">Debe tener al menos 8 caracteres.</small>
+          </div>
+        </div>
+
+        <div class="mb-3 form-check">
+          <input type="checkbox" class="form-check-input" id="rememberMe" />
+          <label class="form-check-label fw-semibold" for="rememberMe">Recuérdame</label>
+        </div>
+
+        <div class="d-grid">
+          <button type="submit" class="btn btn-dark btn-md">
+            Iniciar sesión
+          </button>
+        </div>
+
+        <div *ngIf="errorMessage" class="text-danger mt-2">{{ errorMessage }}</div>
+      </form>
+
+      <div class="text-center mt-3">
+        <button class="btn btn-outline-secondary btn-sm" (click)="redirectToForgotPassword()">
+          ¿Olvidaste tu contraseña?
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-footer></app-footer>
