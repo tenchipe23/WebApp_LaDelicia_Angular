@@ -1,25 +1,32 @@
-<div class="container"> <br> <br>
-    <div class="mas-formularios">
-        <button class="btn btn-dark" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions"
-            aria-controls="offcanvasWithBothOptions">Otros registros</button>
-        <div class="offcanvas offcanvas-start mt-5" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions"
-            aria-labelledby="offcanvasWithBothOptionsLabel">
-            <div class="offcanvas-header my-3">
-                <h3 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">Más formularios...</h3>
-                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+<div class="container">
+  <div class="mas-formularios">
+    <!-- Botón para abrir la ventana modal -->
+    <button class="btn btn-dark" type="button" data-bs-toggle="modal" data-bs-target="#otrosRegistrosModal">
+      Otros registros
+    </button>
+
+    <!-- Ventana Modal -->
+    <div class="modal fade" id="otrosRegistrosModal" tabindex="-1" aria-labelledby="otrosRegistrosLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 class="modal-title" id="otrosRegistrosLabel">Más formularios...</h3>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="user">
+              <img src="" alt="imagen usuario">
             </div>
-            <div class="offcanvas-body">
-                <div class="user">
-                    <img src="" alt="imagen ususario">
-                </div>
-                <div class="d-grid gap-2 my-3">
-                    <a class="btn btn-dark my-2 active" type="submit" aria-disabled="true"><i class="me-2 fas fa-users"></i>Empleados</a>
-                    <a class="btn btn-dark my-2" type="submit" ><i class="me-2 fas fa-user"></i>Usuarios</a>
-                    <a class="btn btn-dark my-2" type="submit" ><i class="me-2 fas fa-box"></i>Productos</a>
-                    <a class="btn btn-dark my-2" type="submit" ><i class="me-2 fas fa-address-book"></i>Clientes</a>
-                    <a class="btn btn-dark my-2" (ngSubmit)="logout()"><i class="me-2 fas fa-sign-out-alt"></i>Cerrar sesión</a>
-                </div>
+            <div class="d-grid gap-2 my-3">
+              <a class="btn btn-dark my-2 active" (click)="redirectTo('/control-panel/employees')" data-bs-dismiss="modal"><i class="me-2 fas fa-users"></i>Empleados</a>
+              <a class="btn btn-dark my-2" (click)="redirectTo('/control-panel/users')" data-bs-dismiss="modal"><i class="me-2 fas fa-user" ></i>Usuarios</a>
+              <a class="btn btn-dark my-2" (click)="redirectTo('/control-panel/product-panel')" data-bs-dismiss="modal"><i class="me-2 fas fa-box"></i>Productos</a>
+              <a class="btn btn-dark my-2" (click)="redirectTo('/control-panel/clients')" data-bs-dismiss="modal"><i class="me-2 fas fa-address-book"></i>Clientes</a>
+              <a class="btn btn-dark my-2" (click)="logout()"><i class="me-2 fas fa-sign-out-alt"></i>Cerrar sesión</a>
             </div>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 </div>

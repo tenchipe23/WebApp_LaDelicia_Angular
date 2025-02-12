@@ -4,7 +4,6 @@ import { AuthService } from '../services/auth.service';
 
 export const authGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
-2
   if (authService.isAuthenticated()) {
     const requiredRole = route.data?.['role']; // Obtén el rol requerido
     if (!requiredRole || authService.hasRole(requiredRole)) {

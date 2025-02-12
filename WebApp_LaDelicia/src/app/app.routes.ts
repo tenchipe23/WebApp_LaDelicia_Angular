@@ -1,37 +1,28 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './core/guards/auth.guard';
-import { DashboardComponent } from './features/dashboard/dashboard/dashboard.component';
-import { LoginComponent } from './features/login/login/login.component';
-import { AboutUsComponent } from './features/about/about-us/about-us.component';
-import { ContactusComponent } from './features/contact_us/contactus/contactus.component';
-import { ProductsComponent } from './features/products/products/products.component';
-import { ForgotPasswordComponent } from './shared/forgotPassword/forgot-password/forgot-password.component';
-import { ClientsComponent } from './features/controlPanel/clientsPanel/clients/clients.component';
-import { EmployeesComponent } from './features/controlPanel/employeesPanel/employees/employees.component';
-import { ProductsPanelComponent } from './features/controlPanel/productsPanel/products-panel/products-panel.component';
-import { UsersComponent } from './features/controlPanel/usersPanel/users/users.component';
 
 export const routes: Routes = [
-    { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-    { path: 'dashboard', component: DashboardComponent },
-    { path: 'login', component: LoginComponent },
-    { path: 'about', component: AboutUsComponent },
-    { path: 'contact', component: ContactusComponent },
-    { path: 'products', component: ProductsComponent },
-    { path: 'forgot-password', component: ForgotPasswordComponent },
-    {
-        path: 'control-panel',
-        canActivate: [authGuard], // Protección para toda la sección
-        data: { role: 'admin' }, // Restricción por rol
-        children: [
-            { path: '', redirectTo: 'users', pathMatch: 'full' },
-            { path: 'clients', component: ClientsComponent, canActivate: [authGuard], data: { role: 'admin' } },
-            { path: 'employees', component: EmployeesComponent, canActivate: [authGuard], data: { role: 'admin' } },
-            { path: 'product-panel', component: ProductsPanelComponent, canActivate: [authGuard], data: { role: 'admin' } },
-            { path: 'users', component: UsersComponent, canActivate: [authGuard], data: { role: 'admin' } },
+  { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+  { path: 'dashboard', loadComponent: () => import('./features/dashboard/dashboard/dashboard.component').then(m => m.DashboardComponent) },
+  { path: 'login', loadComponent: () => import('./features/login/login/login.component').then(m => m.LoginComponent) },
+  { path: 'about', loadComponent: () => import('./features/about/about-us/about-us.component').then(m => m.AboutUsComponent) },
+  { path: 'contact', loadComponent: () => import('./features/contact_us/contactus/contactus.component').then(m => m.ContactusComponent) },
+  { path: 'products', loadComponent: () => import('./features/products/products/products.component').then(m => m.ProductsComponent) },
+  { path: 'forgot-password', loadComponent: () => import('./shared/forgotPassword/forgot-password/forgot-password.component').then(m => m.ForgotPasswordComponent) },
 
-        ]
-    },
-    { path: '**', redirectTo: 'dashboard' },
+  // Rutas Hijas del Panel de Control
+  {
+    path: 'control-panel',
+    canActivate: [authGuard], // Protección para toda la sección
+    data: { role: 'admin' }, // Restricción por rol
+    children: [
+      { path: '', redirectTo: 'users', pathMatch: 'full' },
+      { path: 'clients', loadComponent: () => import('./features/controlPanel/clientsPanel/clients/clients.component').then(m => m.ClientsComponent), canActivate: [authGuard], data: { role: 'admin' } },
+      { path: 'employees', loadComponent: () => import('./features/controlPanel/employeesPanel/employees/employees.component').then(m => m.EmployeesComponent), canActivate: [authGuard], data: { role: 'admin' } },
+      { path: 'product-panel', loadComponent: () => import('./features/controlPanel/productsPanel/products-panel/products-panel.component').then(m => m.ProductsPanelComponent), canActivate: [authGuard], data: { role: 'admin' } },
+      { path: 'users', loadComponent: () => import('./features/controlPanel/usersPanel/users/users.component').then(m => m.UsersComponent), canActivate: [authGuard], data: { role: 'admin' } },
+    ]
+  },
+
+  { path: '**', redirectTo: 'dashboard' },
 ];
-

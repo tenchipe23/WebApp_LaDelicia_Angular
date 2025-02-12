@@ -9,11 +9,6 @@ import { CommonModule } from '@angular/common';
 })
 export class PanelNavbarComponent {
   navItems = [
-    { label: 'Inicio', link: '/dashboard', active: true },
-    { label: 'Productos', link: '/products', active: false },
-    { label: 'Nosotros', link: '/about', active: false },
-    { label: 'Contacto', link: '/contact', active: false },
-    { label: 'Iniciar Sesión', link: '/login', active: false }
 
   ];
   user = {
