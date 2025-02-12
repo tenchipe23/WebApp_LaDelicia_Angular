@@ -1,131 +1,64 @@
 <app-panel-navbar></app-panel-navbar>
-<div class="container formulario mt-5 mb-5 p-4 my-3">
-        <div class="row mt-5">
-            <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
-                <h2>Formulario de empleados</h2>
-                <form id="infoForm">
-                    <div class="mb-3">
-                        <label for="nombre" class="form-label">Nombre</label>
-                        <input type="text" class="form-control" id="nombre" placeholder="Ingresa el nombre..." required maxlength="15" pattern="[A-Za-zÀ-ÿ\s]+" title="El nombre solo puede contener letras y espacios.">
-                        <div class="invalid-feedback">El nombre solo puede contener letras y espacios y debe tener máximo 15 caracteres.</div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="apellido" class="form-label">Apellido</label>
-                        <input type="text" class="form-control" id="apellido" placeholder="Ingresa el apellido..." required maxlength="15" pattern="[A-Za-zÀ-ÿ\s]+" title="El apellido solo puede contener letras y espacios.">
-                        <div class="invalid-feedback">El apellido solo puede contener letras y espacios y debe tener máximo 15 caracteres.</div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="calle" class="form-label">Calle</label>
-                        <input type="text" class="form-control" id="calle" placeholder="Ingresa la calle..." maxlength="15">
-                        <div class="invalid-feedback">La calle debe tener máximo 15 caracteres.</div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="ciudad" class="form-label">Ciudad</label>
-                        <input type="text" class="form-control" id="ciudad" placeholder="Ingresa la ciudad..." maxlength="15">
-                        <div class="invalid-feedback">La ciudad debe tener máximo 15 caracteres.</div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="codigo-postal" class="form-label">Código postal</label>
-                        <input type="text" class="form-control" id="codigo-postal" placeholder="Ingresa el código postal..." pattern="\d+" title="El código postal solo puede contener números." maxlength="8">
-                        <div class="invalid-feedback">El código postal solo puede contener números y debe tener máximo 8 caracteres.</div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="telefono" class="form-label">Teléfono</label>
-                        <input type="text" class="form-control" id="telefono" placeholder="Ingresa el teléfono..." maxlength="10" required pattern="\d+" title="El teléfono solo puede contener números.">
-                        <div class="invalid-feedback">El teléfono solo puede contener números y debe tener máximo 10 caracteres.</div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="salario" class="form-label">Salario</label>
-                        <input type="text" class="form-control" id="salario" placeholder="Ingresa el salario..." maxlength="6" required pattern="\d+" title="El salario solo puede contener números.">
-                        <div class="invalid-feedback">El salario solo puede contener números y debe tener máximo 6 caracteres.</div>
-                    </div>
-                    <div class="d-grid gap-2">
-                        <button class="btn btn-success">Guardar</button>
-                        <button class="btn btn-secondary">Limpiar</button>
-                    </div>
-                    <!-- Componente de menú insertado -->
-                    <div class="mt-3">
-                        <app-menu></app-menu>
-                    </div>
-                </form>
-            </div>
-            <div class="col-sm-12 col-md-8 col-lg-8 col-xl-8">
-                <h2 class="text-center">Listado de empleados</h2>
-                <div class="table-responsive">
-                    <table class="table table-light table-striped">
-                        <thead>
-                            <tr>
-                                <th class="text-center">Nombre</th>
-                                <th class="text-center">Apellido</th>
-                                <th class="text-center">Calle</th>
-                                <th class="text-center">Ciudad</th>
-                                <th class="text-center">Código postal</th>
-                                <th class="text-center">Teléfono</th>
-                                <th class="text-center">Salario</th>
-                                <th class="text-center">Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="text-center">Roberto</td>
-                                <td class="text-center">Herrera</td>
-                                <td class="text-center">Calle 4</td>
-                                <td class="text-center">Cuitlahuac</td>
-                                <td class="text-center">20422</td>
-                                <td class="text-center">274 111 9206</td>
-                                <td class="text-center">$3000</td>
-                                <td class="centrado">
-                                    <a href="#" class="text-primary me-2"><i class="fas fa-eye"></i></a>
-                                    <a href="#" class="text-warning me-2"><i class="fas fa-edit"></i></a>
-                                    <a href="#" class="text-danger"><i class="fas fa-trash-alt"></i></a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="text-center">Luz</td>
-                                <td class="text-center">Arroyo</td>
-                                <td class="text-center">Calle 12</td>
-                                <td class="text-center">Tezonapa</td>
-                                <td class="text-center">89403</td>
-                                <td class="text-center">274 762 0284</td>
-                                <td class="text-center">$2500</td>
-                                <td class="centrado">
-                                    <a href="#" class="text-primary me-2"><i class="fas fa-eye"></i></a>
-                                    <a href="#" class="text-warning me-2"><i class="fas fa-edit"></i></a>
-                                    <a href="#" class="text-danger"><i class="fas fa-trash-alt"></i></a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="text-center">Brenda</td>
-                                <td class="text-center">Rivera</td>
-                                <td class="text-center">Calle 2</td>
-                                <td class="text-center">Cordoba</td>
-                                <td class="text-center">68293</td>
-                                <td class="text-center">272 265 6720</td>
-                                <td class="text-center">$2000</td>
-                                <td class="centrado">
-                                    <a href="#" class="text-primary me-2"><i class="fas fa-eye"></i></a>
-                                    <a href="#" class="text-warning me-2"><i class="fas fa-edit"></i></a>
-                                    <a href="#" class="text-danger"><i class="fas fa-trash-alt"></i></a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="text-center">Nallely</td>
-                                <td class="text-center">Olivo</td>
-                                <td class="text-center">Calle 5</td>
-                                <td class="text-center">Cordoba</td>
-                                <td class="text-center">13382</td>
-                                <td class="text-center">274 377 6933</td>
-                                <td class="text-center">$2500</td>
-                                <td class="centrado">
-                                    <a href="#" class="text-primary me-2"><i class="fas fa-eye"></i></a>
-                                    <a href="#" class="text-warning me-2"><i class="fas fa-edit"></i></a>
-                                    <a href="#" class="text-danger"><i class="fas fa-trash-alt"></i></a>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+
+<div class="container mt-5 mb-5 p-4 my-3">
+  <div class="row">
+    <!-- Columna izquierda: Formulario -->
+    <div class="col-lg-4 col-md-12 mt-5">
+      <h2>Formulario de clientes</h2>
+      <form id="infoForm">
+        <div class="mb-3">
+          <label for="nombre" class="form-label">Nombre</label>
+          <input type="text" class="form-control" id="nombre" placeholder="Ingresa el nombre..." required maxlength="15" pattern="[A-Za-zÀ-ÿ\s]+" title="El nombre solo puede contener letras y espacios.">
+          <div class="invalid-feedback">El nombre solo puede contener letras y espacios y debe tener máximo 15 caracteres.</div>
         </div>
+        <div class="mb-3">
+          <label for="apellido" class="form-label">Apellido</label>
+          <input type="text" class="form-control" id="apellido" placeholder="Ingresa el apellido..." required maxlength="15" pattern="[A-Za-zÀ-ÿ\s]+" title="El apellido solo puede contener letras y espacios.">
+          <div class="invalid-feedback">El apellido solo puede contener letras y espacios y debe tener máximo 15 caracteres.</div>
+        </div>
+        <div class="mb-3">
+          <label for="calle" class="form-label">Calle</label>
+          <input type="text" class="form-control" id="calle" placeholder="Ingresa la calle..." maxlength="15">
+          <div class="invalid-feedback">La calle debe tener máximo 15 caracteres.</div>
+        </div>
+        <div class="mb-3">
+          <label for="ciudad" class="form-label">Ciudad</label>
+          <input type="text" class="form-control" id="ciudad" placeholder="Ingresa la ciudad..." maxlength="15">
+          <div class="invalid-feedback">La ciudad debe tener máximo 15 caracteres.</div>
+        </div>
+        <div class="mb-3">
+          <label for="codigo-postal" class="form-label">Código postal</label>
+          <input type="text" class="form-control" id="codigo-postal" placeholder="Ingresa el código postal..." pattern="\d+" title="El código postal solo puede contener números." maxlength="8">
+          <div class="invalid-feedback">El código postal solo puede contener números y debe tener máximo 8 caracteres.</div>
+        </div>
+        <div class="mb-3">
+          <label for="telefono" class="form-label">Teléfono</label>
+          <input type="text" class="form-control" id="telefono" placeholder="Ingresa el teléfono..." maxlength="10" required pattern="\d+" title="El teléfono solo puede contener números.">
+          <div class="invalid-feedback">El teléfono solo puede contener números y debe tener máximo 10 caracteres.</div>
+        </div>
+        <div class="mb-3">
+          <label for="salario" class="form-label">Salario</label>
+          <input type="text" class="form-control" id="salario" placeholder="Ingresa el salario..." maxlength="6" required pattern="\d+" title="El salario solo puede contener números.">
+          <div class="invalid-feedback">El salario solo puede contener números y debe tener máximo 6 caracteres.</div>
+        </div>
+        <div class="d-grid gap-2">
+          <button class="btn btn-success">Guardar</button>
+          <button class="btn btn-secondary">Limpiar</button>
+        </div>
+      </form>
     </div>
-  <app-footer></app-footer>
+
+    <!-- Columna derecha: Tabla de empleados -->
+    <div class="col-lg-8 col-md-12">
+      <h2 class="text-center">Listado de empleados</h2>
+      <app-client-table [clients]="clients"></app-client-table>
+    </div>
+  </div>
+
+  <!-- Sección donde se incluye el componente de menú (fuera del formulario) -->
+  <div class="mt-3">
+    <app-menu></app-menu>
+  </div>
+</div>
+
+<app-footer></app-footer>

@@ -13,11 +13,10 @@ export class MenuComponent {
 
   constructor(private authService: AuthService, private router: Router) { }
 
-  menuVisible: boolean = false;
-
-  toggleMenu() {
-    this.menuVisible = !this.menuVisible;
+  redirectTo(path: string): void {
+    this.router.navigate([path]);
   }
+
   logout() {
     this.authService.logout();
   }

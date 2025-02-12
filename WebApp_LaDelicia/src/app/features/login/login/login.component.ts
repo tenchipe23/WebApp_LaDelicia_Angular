@@ -41,4 +41,8 @@ export class LoginComponent {
     });
   }
 
+  redirectToForgotPassword(): void {
+    this.router.navigate(['/forgot-password']);
+  }
+
 }

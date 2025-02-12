@@ -1,0 +1,27 @@
+<div class="container p-4 my-3">
+  <div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+      <h2 class="text-center">Listado de Usuarios</h2>
+      <table class="table table-light table-striped">
+        <thead>
+        <tr>
+          <th class="centrado">Usuario</th>
+          <th class="centrado">Correo</th>
+          <th class="centrado">Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let user of users">
+          <td class="centrado">{{ user.usuario }}</td>
+          <td class="centrado">{{ user.correo }}</td>
+          <td class="centrado">
+            <a href="#" class="text-primary me-2"><i class="fas fa-eye"></i></a>
+            <a href="#" class="text-warning me-2"><i class="fas fa-edit"></i></a>
+            <a href="#" class="text-danger"><i class="fas fa-trash-alt"></i></a>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
