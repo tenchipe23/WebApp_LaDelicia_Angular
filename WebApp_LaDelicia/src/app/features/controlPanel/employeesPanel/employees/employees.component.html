@@ -8,30 +8,30 @@
       <form [formGroup]="employeeForm" (ngSubmit)="saveEmployee()">
         <div class="mb-3">
           <label for="nombre" class="form-label">Nombre</label>
-          <input type="text" class="form-control" formControlName="nombre" placeholder="Ingresa el nombre..." />
+          <input type="text" id="nombre" class="form-control" formControlName="nombre" placeholder="Ingresa el nombre..." />
         </div>
         <div class="mb-3">
-          <label for="apellido" class="form-label">Apellido</label>
+          <label for="apellido" id="apellido" class="form-label">Apellido</label>
           <input type="text" class="form-control" formControlName="apellido" placeholder="Ingresa el apellido..." />
         </div>
         <div class="mb-3">
-          <label for="calle" class="form-label">Calle</label>
+          <label for="calle" id="calle" class="form-label">Calle</label>
           <input type="text" class="form-control" formControlName="calle" placeholder="Ingresa la calle..." />
         </div>
         <div class="mb-3">
-          <label for="ciudad" class="form-label">Ciudad</label>
+          <label for="ciudad" id="ciudad" class="form-label">Ciudad</label>
           <input type="text" class="form-control" formControlName="ciudad" placeholder="Ingresa la ciudad..." />
         </div>
         <div class="mb-3">
-          <label for="codigoPostal" class="form-label">Código postal</label>
+          <label for="codigoPostal" id="codigoPostal" class="form-label">Código postal</label>
           <input type="text" class="form-control" formControlName="codigoPostal" placeholder="Ingresa el código postal..." />
         </div>
         <div class="mb-3">
-          <label for="telefono" class="form-label">Teléfono</label>
+          <label for="telefono" id="telefono" class="form-label">Teléfono</label>
           <input type="text" class="form-control" formControlName="telefono" placeholder="Ingresa el teléfono..." />
         </div>
         <div class="mb-3">
-          <label for="salario" class="form-label">Salario</label>
+          <label for="salario" id="salario" class="form-label">Salario</label>
           <input type="number" class="form-control" formControlName="salario" placeholder="Ingresa el salario..." />
         </div>
         <div class="d-grid gap-2">

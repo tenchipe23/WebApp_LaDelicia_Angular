@@ -6,9 +6,13 @@ import { Router } from '@angular/router';
   providedIn: 'root',
 })
 export class AuthService {
+ //Url de la api para verificar la autenticación de los usuarios
+  // private authUrl = 'http://localhost:3100/api/auths/login/user';
   private token: string | null = null;
 
   constructor(private router: Router) { }
+
+
 
   login(identifier: string, password: string): Observable<any> {
     // Simulación de credenciales y roles
