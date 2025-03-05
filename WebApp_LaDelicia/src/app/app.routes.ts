@@ -9,7 +9,6 @@ export const routes: Routes = [
   { path: 'contact', loadComponent: () => import('./features/contact_us/contactus/contactus.component').then(m => m.ContactusComponent) },
   { path: 'products', loadComponent: () => import('./features/products/products/products.component').then(m => m.ProductsComponent) },
   { path: 'forgot-password', loadComponent: () => import('./shared/forgotPassword/forgot-password/forgot-password.component').then(m => m.ForgotPasswordComponent) },
-
   // Rutas Hijas del Panel de Control
   {
     path: 'control-panel',

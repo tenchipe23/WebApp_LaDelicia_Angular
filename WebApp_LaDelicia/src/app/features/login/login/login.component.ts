@@ -5,6 +5,7 @@ import { RouterModule, Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { NavbarComponent } from '../../../shared/navbar/navbar/navbar.component';
 import { FooterComponent } from "../../../shared/footer/footer/footer.component";
+import {response} from "express";
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -19,7 +20,6 @@ export class LoginComponent {
 
   constructor(private formB: FormBuilder, private authService: AuthService, private router: Router) { }
 
-
   ngOnInit(): void {
     // Definir los controles del formulario
     this.loginForm = this.formB.group({
@@ -28,18 +28,32 @@ export class LoginComponent {
     });
   }
 
-
   login(): void {
     const { identifier, password } = this.loginForm.value;
-    this.authService.login(identifier, password).subscribe({
-      next: () => {
-        //  Redirigir a la página de inicio de sesión después de iniciar sesión exitosamente
+
+    if (!identifier || !password) {
+      this.errorMessage = 'Usuario y contraseña son requeridos';
+      return;
+    }
+
+    const credentials = identifier.includes('@')
+      ? { email: identifier, password }
+      : { username: identifier, password };
+
+    console.log('Enviando credenciales:', credentials);
+
+    this.authService.login(credentials).subscribe({
+      next: (response) => {
+        console.log('Llamada a handleLoginResponse:', response);
+        this.authService.handleLoginResponse(response);
       },
       error: (error) => {
-        this.errorMessage = error.message;
+        console.error('Error en el login:', error);
+        this.errorMessage = error.error?.message || 'Error al iniciar sesión';
       },
     });
   }
+
 
   redirectToForgotPassword(): void {
     this.router.navigate(['/forgot-password']);

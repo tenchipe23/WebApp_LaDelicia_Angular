@@ -1,45 +1,42 @@
 <app-panel-navbar></app-panel-navbar>
 
-<div class="container mt-5 mb-5 p-4 my-3">
-  <div class="row">
+<div class="container">
+  <div class="row mt-5">
     <!-- Columna izquierda: Formulario -->
-    <div class="col-lg-4 col-md-12 mt-5">
+    <div class="col-sm-4 mt-5">
       <h2>Formulario de clientes</h2>
-      <form id="infoForm">
+      <form id="infoForm" class="mt-4">
         <div class="mb-3">
           <label for="nombre" class="form-label">Nombre</label>
-          <input type="text" class="form-control" id="nombre" placeholder="Ingresa el nombre..." required maxlength="15" pattern="[A-Za-zÀ-ÿ\s]+" title="El nombre solo puede contener letras y espacios.">
-          <div class="invalid-feedback">El nombre solo puede contener letras y espacios y debe tener máximo 15 caracteres.</div>
+          <input type="text" class="form-control" id="nombre" placeholder="Ingresa el nombre...">
         </div>
         <div class="mb-3">
-          <label for="apellido" class="form-label">Apellido</label>
-          <input type="text" class="form-control" id="apellido" placeholder="Ingresa el apellido..." required maxlength="15" pattern="[A-Za-zÀ-ÿ\s]+" title="El apellido solo puede contener letras y espacios.">
-          <div class="invalid-feedback">El apellido solo puede contener letras y espacios y debe tener máximo 15 caracteres.</div>
+          <label for="primerApellido" class="form-label">Primer Apellido</label>
+          <input type="text" class="form-control" id="primerApellido" placeholder="Ingresa el apellido...">
+        </div>
+        <div class="mb-3">
+          <label for="segundoApellido" class="form-label">Primer Apellido</label>
+          <input type="text" class="form-control" id="segundoApellido" placeholder="Ingresa el apellido...">
         </div>
         <div class="mb-3">
           <label for="calle" class="form-label">Calle</label>
-          <input type="text" class="form-control" id="calle" placeholder="Ingresa la calle..." maxlength="15">
-          <div class="invalid-feedback">La calle debe tener máximo 15 caracteres.</div>
+          <input type="text" class="form-control" id="calle" placeholder="Ingresa la calle...">
         </div>
         <div class="mb-3">
           <label for="ciudad" class="form-label">Ciudad</label>
-          <input type="text" class="form-control" id="ciudad" placeholder="Ingresa la ciudad..." maxlength="15">
-          <div class="invalid-feedback">La ciudad debe tener máximo 15 caracteres.</div>
+          <input type="text" class="form-control" id="ciudad" placeholder="Ingresa tu ciudad">
         </div>
         <div class="mb-3">
           <label for="codigo-postal" class="form-label">Código postal</label>
-          <input type="text" class="form-control" id="codigo-postal" placeholder="Ingresa el código postal..." pattern="\d+" title="El código postal solo puede contener números." maxlength="8">
-          <div class="invalid-feedback">El código postal solo puede contener números y debe tener máximo 8 caracteres.</div>
+          <input type="text" class="form-control" id="codigo-postal" placeholder="Ingresa el código postal...">
         </div>
         <div class="mb-3">
-          <label for="telefono" class="form-label">Teléfono</label>
-          <input type="text" class="form-control" id="telefono" placeholder="Ingresa el teléfono..." maxlength="10" required pattern="\d+" title="El teléfono solo puede contener números.">
-          <div class="invalid-feedback">El teléfono solo puede contener números y debe tener máximo 10 caracteres.</div>
+          <label for="telefono" class="form-label">Número de Teléfono</label>
+          <input type="text" class="form-control" id="telefono" placeholder="Ingresa tu número de teléfono">
         </div>
         <div class="mb-3">
           <label for="salario" class="form-label">Salario</label>
           <input type="text" class="form-control" id="salario" placeholder="Ingresa el salario..." maxlength="6" required pattern="\d+" title="El salario solo puede contener números.">
-          <div class="invalid-feedback">El salario solo puede contener números y debe tener máximo 6 caracteres.</div>
         </div>
         <div class="d-grid gap-2">
           <button class="btn btn-success">Guardar</button>
@@ -49,14 +46,13 @@
     </div>
 
     <!-- Columna derecha: Tabla de empleados -->
-    <div class="col-lg-8 col-md-12">
-      <h2 class="text-center">Listado de empleados</h2>
+    <div class="col-md-4 col-md-10 mt-5">
       <app-client-table [clients]="clients"></app-client-table>
     </div>
   </div>
 
   <!-- Sección donde se incluye el componente de menú (fuera del formulario) -->
-  <div class="mt-3">
+  <div class="mt-2">
     <app-menu></app-menu>
   </div>
 </div>

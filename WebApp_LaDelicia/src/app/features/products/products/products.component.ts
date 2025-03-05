@@ -16,27 +16,29 @@ export class ProductsComponent implements OnInit{
   isLoading: boolean = true;
   errorMessage: string = '';
 
-  constructor(private cloudinaryService: CloudinaryService) {}
+  constructor(private productService: CloudinaryService) {}
 
   ngOnInit(): void {
     this.fetchProducts();
   }
 
   fetchProducts(): void {
-    this.cloudinaryService.getProducts().subscribe({
+    this.productService.getProducts().subscribe({
       next: (data) => {
         this.products = data.map((product: any) => ({
           id: product.id,
           name: product.name_product,
           price: product.price_product,
-          image: product.image || 'assets/panaderia_removebg_preview.png' // Imagen por defecto en caso de error
+          image: product.image || 'assets/panaderia_removebg_preview.png'
         }));
         this.isLoading = false;
       },
       error: (error) => {
-        this.errorMessage = 'Error al cargar productos. Intenta de nuevo más tarde.';
+        console.error('Error al recuperar productos:', error);
+        this.errorMessage = error.error?.message || 'Error al cargar productos.';
         this.isLoading = false;
       }
     });
   }
+
   }

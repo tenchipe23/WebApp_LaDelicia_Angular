@@ -1,19 +1,28 @@
-import { CanActivateFn } from '@angular/router';
+import {CanActivateFn, Router} from '@angular/router';
 import { inject } from '@angular/core';
 import { AuthService } from '../services/auth.service';
+import { ToastrService } from 'ngx-toastr';
 
 export const authGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
+  const router = inject(Router);
+  const toastr = inject(ToastrService);
+
+  const userRole = authService.getUserRole();
+  console.log('Intentando acceder con rol:', userRole);
+
   if (authService.isAuthenticated()) {
-    const requiredRole = route.data?.['role']; // Obtén el rol requerido
-    if (!requiredRole || authService.hasRole(requiredRole)) {
-      return true; // Usuario autenticado y con el rol necesario
+    const requiredRole = route.data?.['role'];
+
+    if (!requiredRole || userRole === 'admin' || userRole === requiredRole) {
+      return true;
     }
-    console.warn('Acceso denegado: rol insuficiente');
-    return false; // Usuario no tiene el rol necesario
+    toastr.warning('Acceso denegado: rol insuficiente', 'Aviso');
+    router.navigate(['/dashboard']);
+    return false;
   }
 
-  console.warn('Acceso denegado: usuario no autenticado');
-  return false; // Usuario no está autenticado
-
+  toastr.error('Acceso denegado: usuario no autenticado', 'Error');
+  router.navigate(['/dashboard']);
+  return false;
 };
