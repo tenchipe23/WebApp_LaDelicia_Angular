@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import {EmployeeTableComponent} from "../../../../shared/tables/employee-table/employee-table.component";
-import {MenuComponent} from "../../../../shared/menu/menu/menu.component";
-import {FooterComponent} from "../../../../shared/footer/footer/footer.component";
-import {PanelNavbarComponent} from "../../../../shared/panel-navbar/panel-navbar.component";
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { EmployeeService } from '../../../../core/services/employee.service'; // Asegúrate de importar el servicio correcto
+import { EmployeeTableComponent } from "../../../../shared/tables/employee-table/employee-table.component";
+import { MenuComponent } from "../../../../shared/menu/menu/menu.component";
+import { FooterComponent } from "../../../../shared/footer/footer/footer.component";
+import { PanelNavbarComponent } from "../../../../shared/panel-navbar/panel-navbar.component";
 
 @Component({
   selector: 'app-employees',
@@ -16,13 +17,13 @@ import {PanelNavbarComponent} from "../../../../shared/panel-navbar/panel-navbar
     PanelNavbarComponent
   ],
   templateUrl: './employees.component.html',
-  styleUrl: './employees.component.css'
+  styleUrls: ['./employees.component.css']
 })
-export class EmployeesComponent {
+export class EmployeesComponent implements OnInit {
   employeeForm: FormGroup;
   employees: any[] = [];
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private employeeService: EmployeeService) {
     this.employeeForm = this.fb.group({
       nombre: ['', [Validators.required, Validators.maxLength(15)]],
       apellido: ['', [Validators.required, Validators.maxLength(15)]],
@@ -34,11 +35,46 @@ export class EmployeesComponent {
     });
   }
 
+  ngOnInit(): void {
+    this.loadEmployees();
+  }
+
+  loadEmployees() {
+    this.employeeService.getAllEmployees().subscribe(
+      data => {
+        this.employees = data;
+      },
+      error => {
+        console.error('Error al obtener empleados:', error);
+      }
+    );
+  }
+
   saveEmployee() {
     if (this.employeeForm.valid) {
-      this.employees.push(this.employeeForm.value);
-      this.employeeForm.reset();
+      const newEmployee = this.employeeForm.value;
+      this.employeeService.createEmployee(newEmployee).subscribe(
+        response => {
+          console.log('Empleado creado exitosamente:', response);
+          this.loadEmployees(); // Recargar la lista de empleados después de crear uno nuevo
+          this.employeeForm.reset();
+        },
+        error => {
+          console.error('Error al crear empleado:', error);
+        }
+      );
     }
   }
 
+  deleteEmployee(id: number) {
+    this.employeeService.deleteEmployee(id).subscribe(
+      response => {
+        console.log('Empleado eliminado exitosamente:', response);
+        this.loadEmployees(); // Recargar la lista de empleados después de eliminar uno
+      },
+      error => {
+        console.error('Error al eliminar empleado:', error);
+      }
+    );
+  }
 }
