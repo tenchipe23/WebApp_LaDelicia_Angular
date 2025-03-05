@@ -1,160 +1,31 @@
 <app-navbar></app-navbar>
 
 <div class="container mt-5">
-    <br>
-    <h2 class="text-center pb-2 mt-5 TITL">Nuestros Productos</h2>
-    <section id="productos " class=" mt-5 py-3">
-        <div class="container my-4">
-            <div class="row mb-4">
-                <div class="col-md-12">
-                    <h4>¿Desea buscar un producto en específico?</h4>
-                    <input type="text" id="productSearch" class="form-control"
-                        placeholder="Ingresa el nombre del producto...">
-                </div>
+  <h2 class="text-center pb-2 TITL">Nuestros Productos</h2>
+
+  <div *ngIf="isLoading" class="text-center">
+    <p>Cargando productos...</p>
+  </div>
+
+  <div *ngIf="errorMessage" class="alert alert-danger text-center">
+    {{ errorMessage }}
+  </div>
+
+  <section *ngIf="!isLoading && !errorMessage" id="productos" class="py-3">
+    <div class="container my-3">
+      <div class="row">
+        <div *ngFor="let product of products" class="col-md-4 mb-4">
+          <div class="card">
+            <img [src]="product.image" (error)="product.image='assets/panaderia_removebg_preview.png'" class="card-img-top" alt="{{ product.name }}">
+            <div class="card-body">
+              <h5 class="card-title">{{ product.name }}</h5>
+              <p class="card-text">${{ product.price }} MXN</p>
             </div>
+          </div>
         </div>
-    </section>
-    <section id="productos " class="py-3">
-        <div class="container my-3">
-            <div class="row" id="productList">
-                <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <img src="" class="card-img-top">
-                        <div class="card-body">
-                            <h5 class="card-title">Concha</h5>
-                            <p class="card-text">$15.00 MXN</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <img src="" class="card-img-top">
-                        <div class="card-body">
-                            <h5 class="card-title">Cuernito</h5>
-                            <p class="card-text">$20.00 MXN</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <img src="" class="card-img-top">
-                        <div class="card-body">
-                            <h5 class="card-title">Bolillo</h5>
-                            <p class="card-text">$17.00 MXN</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <img src="" class="card-img-top">
-                        <div class="card-body">
-                            <h5 class="card-title">Panque</h5>
-                            <p class="card-text">$12.00 MXN</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <img src="" class="card-img-top">
-                        <div class="card-body">
-                            <h5 class="card-title">Bigote</h5>
-                            <p class="card-text">$22.00 MXN</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <img src="" class="card-img-top">
-                        <div class="card-body">
-                            <h5 class="card-title">Moffin</h5>
-                            <p class="card-text">$16.00 MXN</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <img src="" class="card-img-top">
-                        <div class="card-body">
-                            <h5 class="card-title">Barquillo</h5>
-                            <p class="card-text">$13.00 MXN</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <img src="" class="card-img-top">
-                        <div class="card-body">
-                            <h5 class="card-title">Pambazo</h5>
-                            <p class="card-text">$18.00 MXN</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <img src="" class="card-img-top">
-                        <div class="card-body">
-                            <h5 class="card-title">Rosca de Reyes</h5>
-                            <p class="card-text">$150.00 MXN</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <img src="" class="card-img-top">
-                        <div class="card-body">
-                            <h5 class="card-title">Payaso</h5>
-                            <p class="card-text">$9.00 MXN</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <img src="" class="card-img-top">
-                        <div class="card-body">
-                            <h5 class="card-title">Budin</h5>
-                            <p class="card-text">$12.00 MXN</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <img src="" class="card-img-top">
-                        <div class="card-body">
-                            <h5 class="card-title">Dona</h5>
-                            <p class="card-text">$9.00 MXN</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <img src="" class="card-img-top">
-                        <div class="card-body">
-                            <h5 class="card-title">Pastel de cumpleaños grande</h5>
-                            <p class="card-text">$300.00 MXN</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <img src="" class="card-img-top">
-                        <div class="card-body">
-                            <h5 class="card-title">Pastel de cumpleaños mediano</h5>
-                            <p class="card-text">$200.00 MXN</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <img src="" class="card-img-top">
-                        <div class="card-body">
-                            <h5 class="card-title">Pastel de cumpleaños chico</h5>
-                            <p class="card-text">$150.00 MXN</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+      </div>
+    </div>
+  </section>
 </div>
 
 <app-footer></app-footer>
