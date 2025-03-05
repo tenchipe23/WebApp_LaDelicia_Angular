@@ -7,26 +7,15 @@ import { catchError } from "rxjs/operators";
   providedIn: 'root'
 })
 export class CloudinaryService {
-
-  private apiUrl = 'http://localhost:3100/api/products/get/products';
+  private apiUrl = 'http://localhost:3100/api/products';
+  //private apiUrl = 'https://6236-189-161-134-145.ngrok-free.app';
 
   constructor(private http: HttpClient) { }
 
   getProducts(): Observable<any> {
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${this.getToken()}`
-    });
+    const token = sessionStorage.getItem('authToken'); // Recuperar el token
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
-    return this.http.get<any>(this.apiUrl, { headers }).pipe(
-      catchError(error => {
-        console.error('Error al obtener productos:', error);
-        return throwError(() => new Error('Error al obtener productos'));
-      })
-    );
+    return this.http.get(`${this.apiUrl}/get/products`, { headers });
   }
-
-  private getToken(): string {
-    return localStorage.getItem('token') || '';
-  }
-
 }

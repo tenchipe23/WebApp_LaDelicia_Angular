@@ -1,86 +1,78 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import {Observable, of, tap} from 'rxjs';
 import { Router } from '@angular/router';
-
+import { HttpClient } from "@angular/common/http";
+import { jwtDecode } from 'jwt-decode';
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
- //Url de la api para verificar la autenticación de los usuarios
-  // private authUrl = 'http://localhost:3100/api/auths/login/user';
-  private token: string | null = null;
+  //Url de la api para realizar la autenticación de los usuarios
+  private apiUrl = 'http://localhost:3001/api/auths';
+  //  private apiUrl = 'https://6236-189-161-134-145.ngrok-free.app';
+  // private token: string | null = null;
 
-  constructor(private router: Router) { }
+  constructor(private http: HttpClient, private router: Router) { }
 
-
-
-  login(identifier: string, password: string): Observable<any> {
-    // Simulación de credenciales y roles
-    if (identifier === 'carlos123@gmail.com' || identifier === 'carlos' && password === 'carloship123') {
-      const mockResponse = {
-        token: 'fake-jwt-token',
-        user: { id: 1, username: 'admin', roles: ['admin'] },
-      };
-      sessionStorage.setItem('authToken', mockResponse.token);
-      this.token = mockResponse.token;
-      this.redirectByRole('admin'); // Redirigir basado en el rol
-      return of(mockResponse);
-    } else if (identifier === 'user' && password === 'password123') {
-      const mockResponse = {
-        token: 'fake-jwt-token-user',
-        user: { id: 2, username: 'user', roles: ['user'] },
-      };
-      sessionStorage.setItem('authToken', mockResponse.token);
-      this.token = mockResponse.token;
-      this.redirectByRole('user'); // Redirigir basado en el rol
-      return of(mockResponse);
-    } else {
-      return new Observable((observer) => {
-        observer.error({ message: 'Credenciales incorrectas' });
-      });
-    }
+  login(credentials: { username?: string; email?: string; password: string }): Observable<any> {
+    console.log('Llamada al servicio de autenticación:', credentials);
+    return this.http.post(`${this.apiUrl}/login/user`, credentials, {
+      headers: { 'Content-Type': 'application/json' }
+    }).pipe(
+      tap(response => console.log('Respuesta del servidor:', response),
+        (error) => console.error('Error en el login:', error))
+    );
   }
 
-  isAuthenticated(): boolean {
-    this.token = sessionStorage.getItem('authToken');
-    return !!this.token;
-  }
 
-  hasRole(requiredRole: string): boolean {
-    const roles = this.getUserRoles();
-    return roles.includes(requiredRole);
-  }
+  handleLoginResponse(response: any): void {
+    console.log('Ejecutando handleLoginResponse:', response);
 
-  private getUserRoles(): string[] {
-    if (!this.token) {
-      this.token = sessionStorage.getItem('authToken');
-    }
-    if (this.token) {
+    if (response.token) {
+      sessionStorage.setItem('authToken', response.token);
+
       try {
-        if (this.token === 'fake-jwt-token') {
-          return ['admin'];
-        } else if (this.token === 'fake-jwt-token-user') {
-          return ['user'];
+        const decodedToken: any = jwtDecode(response.token);
+        const userRole = decodedToken.role;
+
+        if (!userRole) {
+          console.error('El rol no está presente en el token.');
+          return;
+        }
+
+        sessionStorage.setItem('userRole', userRole);
+
+        console.log('Token guardado:', sessionStorage.getItem('authToken'));
+        console.log('Rol guardado:', sessionStorage.getItem('userRole'));
+
+        if (userRole === 'admin') {
+          this.router.navigate(['control-panel/clients']);
+        } else {
+          this.router.navigate(['/dashboard']);
         }
       } catch (error) {
         console.error('Error al decodificar el token:', error);
-        return [];
       }
     }
-    return [];
   }
 
-  private redirectByRole(role: string): void {
-    if (role === 'admin') {
-      this.router.navigate(['/control-panel']); // Ruta para administradores
-    } else if (role === 'user') {
-      this.router.navigate(['/dashboard']); // Ruta para usuarios
-    }
+
+  isAuthenticated(): boolean {
+    return !!sessionStorage.getItem('authToken');
+  }
+
+  getUserRole(): string | null {
+    return sessionStorage.getItem('userRole');
+  }
+
+  hasRole(requiredRole: string): boolean {
+    return this.getUserRole() === requiredRole;
   }
 
   logout(): void {
     sessionStorage.removeItem('authToken');
-    this.token = null;
+    sessionStorage.removeItem('userRole');
     this.router.navigate(['/login']);
   }
+
 }
