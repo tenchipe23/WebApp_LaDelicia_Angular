@@ -7,8 +7,8 @@ import { AuthService } from './auth.service';
   providedIn: 'root'
 })
 export class UserService {
-  private apiUrl = 'http://localhost:3000/api/users';
-  
+  private apiUrl = 'http://localhost:3002/api/users';
+
 
   constructor(private http: HttpClient, private authService: AuthService) { }
 
@@ -29,8 +29,15 @@ export class UserService {
   }
 
   getAllUsers(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/findAll`, { headers: this.getHeaders() });
+    const token = sessionStorage.getItem('authToken'); // Recuperar el token de autenticación
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+    return this.http.get(`${this.apiUrl}/getAll/users`, { headers }); //EndPoint para obtener todos los usuarios
   }
+
+  // getAllUsers(): Observable<any> {
+  //   return this.http.get(`${this.apiUrl}/findAll`, { headers: this.getHeaders() });
+  // }
 
   getUserById(id: number): Observable<any> {
     return this.http.get(`${this.apiUrl}/findById/${id}`, { headers: this.getHeaders() });

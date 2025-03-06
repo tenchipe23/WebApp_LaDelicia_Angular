@@ -1,7 +1,7 @@
 <app-panel-navbar></app-panel-navbar>
 
 <div class="container mt-5 mb-5 p-4 my-3">
-  <div class="row mt-5">
+  <div class="row mt-">
     <!-- Columna izquierda: Formulario -->
     <div class="mt-5 col-lg-4 col-md-12">
       <h2>Formulario de usuarios</h2>

@@ -19,6 +19,7 @@ import { FooterComponent } from '../../../../shared/footer/footer/footer.compone
 })
 export class UsersComponent implements OnInit {
   users: any[] = [];
+  errorMessage: string = '';
 
   constructor(private userService: UserService) {}
 
@@ -26,15 +27,33 @@ export class UsersComponent implements OnInit {
     this.loadUsers();
   }
 
-  loadUsers() {
-    this.userService.getAllUsers().subscribe(
-      (data) => {
-        this.users = data;
+  // loadUsers() {
+  //   this.userService.getAllUsers().subscribe(
+  //     (data) => {
+  //       this.users = data;
+  //     },
+  //     (error) => {
+  //       console.error('Error al obtener usuarios', error);
+  //     }
+  //   );
+  // }
+
+  loadUsers(): void {
+    this.userService.getAllUsers().subscribe({
+      next: (response) => {
+        console.log('Usuarios obtenidos:', response);
+        this.users = response.users.map((userObj: any) => ({
+          id: userObj.user.id,
+          usuario: userObj.user.name, //
+          correo: userObj.auth?.email || 'No disponible', //
+          rol: userObj.user.role
+        }));
       },
-      (error) => {
-        console.error('Error al obtener usuarios', error);
-      }
-    );
+      error: (error) => {
+        console.error('Error al obtener usuarios:', error);
+        this.errorMessage = 'No se pudieron cargar los usuarios.';
+      },
+    });
   }
 
   addUser(event: Event) {
