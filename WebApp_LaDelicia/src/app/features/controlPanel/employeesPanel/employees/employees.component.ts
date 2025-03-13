@@ -5,6 +5,9 @@ import { EmployeeTableComponent } from "../../../../shared/tables/employee-table
 import { MenuComponent } from "../../../../shared/menu/menu/menu.component";
 import { FooterComponent } from "../../../../shared/footer/footer/footer.component";
 import { PanelNavbarComponent } from "../../../../shared/panel-navbar/panel-navbar.component";
+import {NgIf} from "@angular/common";
+import {ToastrService} from "ngx-toastr";
+import { Modal } from "bootstrap";
 
 @Component({
   selector: 'app-employees',
@@ -14,67 +17,166 @@ import { PanelNavbarComponent } from "../../../../shared/panel-navbar/panel-navb
     MenuComponent,
     FooterComponent,
     ReactiveFormsModule,
-    PanelNavbarComponent
+    PanelNavbarComponent,
+    NgIf
   ],
   templateUrl: './employees.component.html',
   styleUrls: ['./employees.component.css']
 })
 export class EmployeesComponent implements OnInit {
-  employeeForm: FormGroup;
   employees: any[] = [];
+  employeeForm!: FormGroup;
+  selectedEmployee: any = null;
+  employeeIdToDelete: number | null = null;
 
-  constructor(private fb: FormBuilder, private employeeService: EmployeeService) {
-    this.employeeForm = this.fb.group({
-      nombre: ['', [Validators.required, Validators.maxLength(15)]],
-      apellido: ['', [Validators.required, Validators.maxLength(15)]],
-      calle: ['', [Validators.maxLength(15)]],
-      ciudad: ['', [Validators.maxLength(15)]],
-      codigoPostal: ['', [Validators.pattern('\\d{5}')]],
-      telefono: ['', [Validators.required, Validators.pattern('\\d{10}')]],
-      salario: ['', [Validators.required, Validators.min(0)]],
-    });
-  }
+  constructor(
+    private fb: FormBuilder,
+    private employeeService: EmployeeService,
+    private toastr: ToastrService
+  ) {}
 
   ngOnInit(): void {
+    this.initializeForm();
     this.loadEmployees();
   }
 
-  loadEmployees() {
-    this.employeeService.getAllEmployees().subscribe(
-      data => {
-        this.employees = data;
-      },
-      error => {
-        console.error('Error al obtener empleados:', error);
-      }
-    );
+  initializeForm(): void {
+    this.employeeForm = this.fb.group({
+      name_employee: ['', Validators.required],
+      middle_name: ['', Validators.required],
+      last_name: ['', Validators.required],
+      street_address: ['', Validators.required],
+      city_address: ['', Validators.required],
+      postal_code: ['', Validators.required],
+      cellphone_number: ['', [Validators.required, Validators.pattern('^[0-9]+$')]]
+    });
   }
 
-  saveEmployee() {
-    if (this.employeeForm.valid) {
-      const newEmployee = this.employeeForm.value;
-      this.employeeService.createEmployee(newEmployee).subscribe(
-        response => {
-          console.log('Empleado creado exitosamente:', response);
-          this.loadEmployees(); // Recargar la lista de empleados después de crear uno nuevo
-          this.employeeForm.reset();
-        },
-        error => {
-          console.error('Error al crear empleado:', error);
+  loadEmployees(): void {
+    this.employeeService.getEmployees().subscribe({
+      next: (data) => {
+        console.log("Datos obtenidos de la API:", data);
+
+        if (Array.isArray(data)) {
+          this.employees = data.map(emp => ({
+            id: emp.id,
+            name_employee: emp.name_employee,
+            middle_name: emp.middle_name,
+            last_name: emp.last_name,
+            street_address: emp.street_address,
+            city_address: emp.city_address,
+            postal_code: emp.postal_code,
+            cellphone_number: emp.cellphone_number
+          }));
+        } else {
+          console.error("La API devolvió un formato inesperado", data);
+          this.toastr.error("Error al procesar la lista de empleados");
         }
-      );
+      },
+      error: (error) => {
+        this.toastr.error('Error al obtener los empleados', 'Error');
+        console.error('Error al obtener empleados:', error);
+      }
+    });
+  }
+
+  addEmployee(): void {
+    if (this.employeeForm.invalid) {
+      this.toastr.warning('Por favor, complete todos los campos correctamente.', 'Advertencia');
+      return;
+    }
+
+    this.employeeService.createEmployee(this.employeeForm.value).subscribe({
+      next: () => {
+        this.toastr.success('Empleado agregado exitosamente', 'Éxito');
+        this.employeeForm.reset();
+        this.loadEmployees();
+      },
+      error: (error) => {
+        this.toastr.error('Error al agregar empleado', 'Error');
+        console.error('Error en agregar empleado:', error);
+      }
+    });
+  }
+
+  editEmployee(employeeId: number): void {
+    // Buscamos el empleado en el arreglo
+    const emp = this.employees.find(e => e.id === employeeId);
+    if (!emp) return;
+    this.selectedEmployee = emp;
+
+    this.employeeForm.patchValue({
+      name_employee: emp.name_employee,
+      middle_name: emp.middle_name,
+      last_name: emp.last_name,
+      street_address: emp.street_address,
+      city_address: emp.city_address,
+      postal_code: emp.postal_code,
+      cellphone_number: emp.cellphone_number
+    });
+  }
+
+  updateEmployee(): void {
+    if (!this.selectedEmployee) return;
+    if (this.employeeForm.invalid) return;
+
+    // Datos del formulario
+    const updatedData = this.employeeForm.value;
+
+    // Llamada al servicio para editar
+    this.employeeService.updateEmployee(this.selectedEmployee.id, updatedData).subscribe({
+      next: () => {
+        // Una vez actualizado, limpiamos
+        this.selectedEmployee = null;
+        this.employeeForm.reset();
+        // Recargamos la lista
+        this.loadEmployees();
+      },
+      error: (err) => {
+        console.error('Error al actualizar empleado', err);
+      }
+    });
+  }
+
+  // Cancelar la edición y volver a modo “agregar”
+  cancelEdit(): void {
+    this.selectedEmployee = null;
+    this.employeeForm.reset();
+  }
+
+  confirmDelete(employeeId: number): void {
+    this.employeeIdToDelete = employeeId;
+    const modalElement = document.getElementById('deleteEmployeeModal');
+    if (modalElement) {
+      const modalBootstrap = Modal.getOrCreateInstance(modalElement);
+      modalBootstrap.show();
     }
   }
 
-  deleteEmployee(id: number) {
-    this.employeeService.deleteEmployee(id).subscribe(
-      response => {
-        console.log('Empleado eliminado exitosamente:', response);
-        this.loadEmployees(); // Recargar la lista de empleados después de eliminar uno
+
+  deleteEmployee(): void {
+    if (!this.employeeIdToDelete) return;
+
+    this.employeeService.deleteEmployee(this.employeeIdToDelete).subscribe({
+      next: () => {
+        // Cierra el modal
+        const modalElement = document.getElementById('deleteEmployeeModal');
+        if (modalElement) {
+          const modalBootstrap = Modal.getInstance(modalElement);
+          if (modalBootstrap) {
+            modalBootstrap.hide();
+          }
+        }
+
+        // Limpia la variable y recarga la lista
+        this.employeeIdToDelete = null;
+        this.loadEmployees();
       },
-      error => {
-        console.error('Error al eliminar empleado:', error);
+      error: (err) => {
+        console.error('Error al eliminar empleado', err);
       }
-    );
+    });
   }
+
+
 }

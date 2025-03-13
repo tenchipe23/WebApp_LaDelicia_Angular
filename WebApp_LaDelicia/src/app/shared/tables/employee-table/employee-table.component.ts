@@ -1,11 +1,10 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, Output, EventEmitter} from '@angular/core';
 import {CurrencyPipe, NgForOf} from "@angular/common";
 
 @Component({
   selector: 'app-employee-table',
   standalone: true,
   imports: [
-    CurrencyPipe,
     NgForOf
   ],
   templateUrl: './employee-table.component.html',
@@ -13,6 +12,18 @@ import {CurrencyPipe, NgForOf} from "@angular/common";
 })
 export class EmployeeTableComponent {
 
-  @Input() employees: any[] = [];
+  @Input() employees: any[] = []; // Lista de empleados
+  @Output() editEmployeeEvent = new EventEmitter<number>();
+  @Output() deleteEmployeeEvent = new EventEmitter<number>();
+
+
+  abrirModal(employeeId: number) {
+    // Emite el ID para edición
+    this.editEmployeeEvent.emit(employeeId);
+  }
+
+  abrirModalEliminar(employeeId: number): void {
+    this.deleteEmployeeEvent.emit(employeeId);
+  }
 
 }

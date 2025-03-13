@@ -1,57 +1,42 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { AuthService } from './auth.service';
+import {map, Observable} from 'rxjs';
+import {environment} from "../../../environments/environment";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UserService {
-  private apiUrl = 'http://localhost:3002/api/users';
+  private baseUrl = environment.userServiceUrl;
 
+  constructor(private http: HttpClient) {}
 
-  constructor(private http: HttpClient, private authService: AuthService) { }
-
-  private getHeaders(): HttpHeaders {
-    const token = sessionStorage.getItem('authToken');
-    return new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
-    });
+  getUsers(): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.http.get(`${this.baseUrl}/getAll/users`, { headers });
   }
 
   createUser(userData: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/create`, userData, { headers: this.getHeaders() });
+    const headers = this.getAuthHeaders();
+    return this.http.post(`${this.baseUrl}/create/user/mobile`, userData, { headers });
   }
 
-  createUserMobile(userData: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/createMobile`, userData, { headers: this.getHeaders() });
+  updateUser(userId: string, updatedData: any): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.http.put(`${this.baseUrl}/update/users/${userId}`, updatedData, { headers });
   }
 
-  getAllUsers(): Observable<any> {
-    const token = sessionStorage.getItem('authToken'); // Recuperar el token de autenticación
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-
-    return this.http.get(`${this.apiUrl}/getAll/users`, { headers }); //EndPoint para obtener todos los usuarios
+  deleteUser(userId: number): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.http.delete(`${this.baseUrl}/delete/user/${userId}`, { headers });
   }
 
-  // getAllUsers(): Observable<any> {
-  //   return this.http.get(`${this.apiUrl}/findAll`, { headers: this.getHeaders() });
-  // }
-
-  getUserById(id: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/findById/${id}`, { headers: this.getHeaders() });
+  private getAuthHeaders(): HttpHeaders {
+    const token = sessionStorage.getItem('authToken');
+    return new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}` // Aseguramos que el token se envía correctamente
+    });
   }
 
-  getUserByName(name: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}/findByUserName/${name}`, { headers: this.getHeaders() });
-  }
-
-  updateUser(id: number, userData: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/update/${id}`, userData, { headers: this.getHeaders() });
-  }
-
-  deleteUser(id: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/delete/${id}`, { headers: this.getHeaders() });
-  }
 }
