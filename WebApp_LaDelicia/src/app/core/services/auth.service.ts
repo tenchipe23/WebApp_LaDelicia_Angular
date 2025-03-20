@@ -3,12 +3,13 @@ import {Observable, of, tap} from 'rxjs';
 import { Router } from '@angular/router';
 import { HttpClient } from "@angular/common/http";
 import { jwtDecode } from 'jwt-decode';
+import {environment} from "../../../environments/environment";
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   //Url de la api para realizar la autenticación de los usuarios
-  private apiUrl = 'http://localhost:3001/api/auths';
+  private baseUrl = environment.authServiceUrl;
   //  private apiUrl = 'https://6236-189-161-134-145.ngrok-free.app';
   // private token: string | null = null;
 
@@ -16,7 +17,7 @@ export class AuthService {
 
   login(credentials: { username?: string; email?: string; password: string }): Observable<any> {
     console.log('Llamada al servicio de autenticación:', credentials);
-    return this.http.post(`${this.apiUrl}/login/user`, credentials, {
+    return this.http.post(`${this.baseUrl}/login/user`, credentials, {
       headers: { 'Content-Type': 'application/json' }
     }).pipe(
       tap(response => console.log('Respuesta del servidor:', response),
@@ -73,6 +74,10 @@ export class AuthService {
     sessionStorage.removeItem('authToken');
     sessionStorage.removeItem('userRole');
     this.router.navigate(['/login']);
+  }
+
+  getToken(): string | null {
+    return sessionStorage.getItem('authToken');
   }
 
 }

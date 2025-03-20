@@ -5,23 +5,41 @@
       <table class="table table-light table-striped">
         <thead>
         <tr>
+          <th class="centrado">Nombre de usuario</th>
+          <th class="centrado">Apellido paterno</th>
+          <th class="centrado">Apellido materno</th>
+          <th class="centrado">Teléfono</th>
+          <th class="centrado">Correo electrónico</th>
           <th class="centrado">Usuario</th>
-          <th class="centrado">Correo</th>
-          <th class="centrado">Acciones</th>
+          <th class="centrado">Rol</th>
+          <th class="centrado">Contraseña</th>
+          <th class="centrado">Funciones</th>
         </tr>
         </thead>
         <tbody>
         <tr *ngFor="let user of users">
-          <td class="centrado">{{ user.usuario }}</td>
-          <td class="centrado">{{ user.correo }}</td>
-          <td class="centrado">
-            <a href="#" class="text-primary me-2"><i class="fas fa-eye"></i></a>
-            <a href="#" class="text-warning me-2"><i class="fas fa-edit"></i></a>
-            <a href="#" class="text-danger"><i class="fas fa-trash-alt"></i></a>
+          <td>{{ user.name }}</td>
+          <td>{{ user.first_surname }}</td>
+          <td>{{ user.last_surname }}</td>
+          <td>{{ user.phone_number }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.username }}</td>
+          <td> {{user.role}} </td>
+          <td>{{ user.password }}</td>
+          <td>
+            <button class="btn btn-warning" (click)="abrirModal(user)">
+              <i class="bi bi-pencil-square"></i> Editar
+            </button>
+            <button class="btn btn-danger" (click)="abrirModalEliminar(user.id)">
+              <i class="bi bi-trash"></i> Eliminar
+            </button>
+
           </td>
         </tr>
+
         </tbody>
       </table>
+
     </div>
   </div>
 </div>
