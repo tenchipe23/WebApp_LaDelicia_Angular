@@ -1,6 +1,5 @@
-import {Component, Input} from '@angular/core';
-import {CurrencyPipe, NgForOf} from "@angular/common";
-import { CommonModule } from "@angular/common";
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { CurrencyPipe, NgForOf } from "@angular/common";
 
 @Component({
   selector: 'app-product-table',
@@ -15,5 +14,14 @@ import { CommonModule } from "@angular/common";
 export class ProductTableComponent {
 
   @Input() products: any[] = [];
+  @Output() deleteProduct = new EventEmitter<number>(); // Emite el ID del producto (number)
+  @Output() updateProduct = new EventEmitter<number>(); // Emite el ID del producto (number)
 
+  onDelete(productId: number): void {
+    this.deleteProduct.emit(productId); // Emite el ID del producto
+  }
+
+  onUpdate(productId: number): void {
+    this.updateProduct.emit(productId); // Emite el ID del producto
+  }
 }

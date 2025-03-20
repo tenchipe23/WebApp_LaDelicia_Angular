@@ -1,22 +1,40 @@
 <div class="table-responsive mt-5">
+  <h2 class="text-center">Listado de Productos</h2>
   <table class="table table-light table-striped">
     <thead>
-    <tr>
-      <th class="text-center">Nombre del producto</th>
-      <th class="text-center">Precio</th>
-      <th class="text-center">Acciones</th>
-    </tr>
+      <tr>
+        <th class="text-center">Nombre del producto</th>
+        <th class="text-center">Precio</th>
+        <th class="text-center">Stock</th>
+        <th class="text-center">Ingredientes</th>
+        <th class="text-center">Tiempo de preparación</th>
+        <th class="text-center">Imagen de Producto</th>
+        <th class="text-center">Acciones</th>
+      </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let product of products">
-      <td class="text-center">{{ product.nombre }}</td>
-      <td class="text-center">{{ product.precio | currency }}</td>
-      <td class="text-center">
-        <a href="#" class="text-primary me-2"><i class="fas fa-eye"></i></a>
-        <a href="#" class="text-warning me-2"><i class="fas fa-edit"></i></a>
-        <a href="#" class="text-danger"><i class="fas fa-trash-alt"></i></a>
-      </td>
-    </tr>
+      <tr *ngFor="let product of products">
+        <td class="text-center">{{ product.name_product }}</td>
+        <td class="text-center">{{ product.price_product | currency }}</td>
+        <td class="text-center">{{ product.stock }}</td>
+        <td class="text-center">{{ product.ingredients }}</td>
+        <td class="text-center">{{ product.baking_time }}</td>
+        <td class="text-center">
+          <img [src]="product.image" 
+               (error)="product.image='assets/panaderia_removebg_preview.png'" 
+               class="card-img-top" 
+               alt="{{ product.name }}"
+               style="width: 150px; height: 100px; object-fit: cover; border-radius: 8px;">
+        </td>
+        <td class="text-center">
+          <button class="btn btn-warning" (click)="onUpdate(product.id)">
+            <i class="bi bi-pencil-fill"></i> Editar
+          </button>
+          <button class="btn btn-danger ms-2" (click)="onDelete(product.id)">
+            <i class="bi bi-trash-fill"></i> Eliminar
+          </button>
+        </td>
+      </tr>
     </tbody>
   </table>
 </div>

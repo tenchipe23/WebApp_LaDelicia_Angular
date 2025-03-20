@@ -1,16 +1,11 @@
 import {Component, Input, Output, EventEmitter} from '@angular/core';
 import { NgForOf } from '@angular/common';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatButtonModule } from '@angular/material/button';
+
 
 @Component({
   selector: 'app-user-table',
   standalone: true,
-  imports: [
-    NgForOf,
-    MatDialogModule,
-    MatButtonModule
-  ],
+  imports: [NgForOf],
   templateUrl: './user-table.component.html',
   styleUrls: ['./user-table.component.css']
 })

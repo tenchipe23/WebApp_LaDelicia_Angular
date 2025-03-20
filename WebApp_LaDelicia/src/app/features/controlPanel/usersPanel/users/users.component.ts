@@ -1,33 +1,33 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../../../core/services/user.service';
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import { ToastrService } from "ngx-toastr";
-import {FooterComponent} from "../../../../shared/footer/footer/footer.component";
-import {NavbarComponent} from "../../../../shared/navbar/navbar/navbar.component";
-import {NgIf} from "@angular/common";
-import {UserTableComponent} from "../../../../shared/tables/user-table/user-table.component";
-import {MenuComponent} from "../../../../shared/menu/menu/menu.component";
-import {Modal} from "bootstrap";
+import { FooterComponent } from "../../../../shared/footer/footer/footer.component";
+import { NavbarComponent } from "../../../../shared/navbar/navbar/navbar.component";
+import { NgIf } from "@angular/common";
+import { UserTableComponent } from "../../../../shared/tables/user-table/user-table.component";
+import { MenuComponent } from "../../../../shared/menu/menu/menu.component";
+import { Modal } from "bootstrap";
+import { PanelNavbarComponent } from '../../../../shared/panel-navbar/panel-navbar.component';
+import { ClientTableComponent } from '../../../../shared/tables/client-table/client-table.component';
 
 @Component({
   selector: 'app-users',
   standalone: true,
   templateUrl: './users.component.html',
   imports: [
-    FooterComponent,
-    NavbarComponent,
-    ReactiveFormsModule,
-    NgIf,
-    UserTableComponent,
-    MenuComponent
-  ],
+  ReactiveFormsModule,
+  FooterComponent,
+  MenuComponent, NavbarComponent,
+  UserTableComponent,
+  NgIf],
   styleUrl: './users.component.css'
 })
 export class UsersComponent implements OnInit {
 
   users: any[] = [];
   userForm!: FormGroup;
-  selectedUser: any = null; // si es nulo se agrega, si no se edita
+  selectedUser: any = null; // Si es nulo se agrega, si no se edita
   userIdToDelete: number | null = null;
 
   constructor(
@@ -49,28 +49,29 @@ export class UsersComponent implements OnInit {
       phone_number: ['', [Validators.required, Validators.pattern('^[0-9]+$')]],
       email: ['', [Validators.required, Validators.email]],
       username: ['', Validators.required],
-      password: ['', Validators.required]
+      password: ['', Validators.required],
+     
     });
   }
-
 
   loadUsers(): void {
     this.userService.getUsers().subscribe({
       next: (data: any) => {
         console.log('Datos obtenidos de la API:', data);
 
-        // 1. Verificamos que data.users sea un array
-        if (!data || !Array.isArray(data.users)) {
+        // Verificamos que data.data sea un array (según la nueva estructura)
+        if (!data || !Array.isArray(data.data)) {
           console.error("Error: La respuesta de la API no contiene una lista de usuarios válidos.", data);
           this.users = [];
           return;
         }
 
-        // 2. Convertimos cada elemento { auth: {...}, user: {...} }
-        //    en un objeto plano que la tabla entienda.
-        this.users = data.users.map((elem: any) => {
+        // Convertimos cada elemento { user: {...}, auth: {...}, client: {...} }
+        // en un objeto plano que la tabla entienda.
+        this.users = data.data.map((elem: any) => {
           const authData = elem.auth || {};
           const userData = elem.user || {};
+          const clientData = elem.client || {};
 
           return {
             // ID real para editar/eliminar
@@ -87,9 +88,11 @@ export class UsersComponent implements OnInit {
             username: authData.username || '',
             role: authData.role || '',
 
-            // Si quieres mostrar la contraseña real, usa authData.password
-            // pero es común no mostrarla en claro.
-            password: ''
+            // Campos que estaban en 'client'
+            city: clientData.city || '',
+            date_of_birth: clientData.date_of_birth || '',
+            postal_code: clientData.postal_code || '',
+            id_preferred_payment_method: clientData.id_preferred_payment_method || ''
           };
         });
       },
@@ -99,7 +102,6 @@ export class UsersComponent implements OnInit {
       }
     });
   }
-
 
   addUser(): void {
     if (this.userForm.invalid) {
@@ -122,17 +124,17 @@ export class UsersComponent implements OnInit {
     });
   }
 
-
-
-
   editUser(user: any): void {
     this.selectedUser = user;
-    this.userForm.patchValue(user);
+    this.userForm.patchValue({
+      ...user,
+      city: user.city,
+      date_of_birth: user.date_of_birth,
+      postal_code: user.postal_code,
+      id_preferred_payment_method: user.id_preferred_payment_method
+    });
   }
 
-  /**
-   * Método para actualizar usuario.
-   */
   updateUser(): void {
     if (!this.selectedUser) return;
 
@@ -163,10 +165,6 @@ export class UsersComponent implements OnInit {
     }
   }
 
-  /**
-   * Método para eliminar usuario de manera lógica.
-   */
-  // =========================================================
   deleteUser(): void {
     if (!this.userIdToDelete) return;
 
@@ -189,5 +187,5 @@ export class UsersComponent implements OnInit {
       }
     });
   }
-
 }
+
