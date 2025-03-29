@@ -1,0 +1,308 @@
+.container{
+    height: 80vh;
+}
+
+.interface {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+
+
+
+  .start{
+    position: absolute;
+    background-color: rgb(255, 255, 255);
+    color: rgb(218, 167, 67);
+    top: 760px;
+    left: 1230px;
+    border: #c1c4c5;
+    border-radius: 20%;
+    width: 100px;
+    height: 50px;
+    box-shadow: inset -4px 4px 8px rgba(251, 249, 249, 0.2), 
+    4px 3px 8px rgba(50, 50, 50, 0.3); 
+    transition: all 0.2s ease;
+
+  }
+
+  .start:hover {
+    background-color: #ffffff;
+    transform: scale(1.1);
+}
+
+
+  .stop{
+    position: absolute;
+    background-color: rgb(255, 255, 255);
+    color: rgb(218, 167, 67);
+    top: 760px;
+    left: 1340px;
+    border: #c1c4c5;
+    border-radius: 20%;
+    width: 100px;
+    height: 50px;
+    box-shadow: inset -4px 4px 8px rgba(251, 249, 249, 0.2), 
+    4px 3px 8px rgba(50, 50, 50, 0.3); 
+    transition: all 0.2s ease;
+
+  }
+
+  .stop:hover {
+    background-color: #ffffff;
+    transform: scale(1.1);
+}
+
+ 
+  
+  .temperature-display {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .temperature-circle {
+    width: 100px;
+    height: 100px;
+    border: 2px solid #ddd;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+  }
+
+  .timer-circle {
+    background-color: rgb(255, 255, 255);
+    color: rgb(226, 168, 70);
+    position: absolute;
+    top: 140px;
+    width: 200px;
+    height: 200px;
+    border: 2px solid #ddd;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    box-shadow: inset -4px 4px 8px rgba(251, 249, 249, 0.2), 
+    4px 3px 8px rgba(50, 50, 50, 0.3); 
+  }
+  
+  
+ 
+  .back{
+    background-color: rgb(255, 255, 255);
+    color: rgb(226, 168, 70);
+    position: absolute;
+    top: 30px;
+    left: 50px;
+    width: 100px;
+    height: 100px;
+    border: 2px solid #ddd;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    box-shadow: inset -4px 4px 8px rgba(251, 249, 249, 0.2), 
+    4px 3px 8px rgba(50, 50, 50, 0.3); 
+  }
+
+  .back2{
+    background-color: rgb(255, 255, 255);
+    color: rgb(226, 168, 70);
+    position: absolute;
+    top: 30px;
+    left: 284px;
+    width: 100px;
+    height: 100px;
+    border: 2px solid #ddd;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    box-shadow: inset -4px -4px 8px rgba(251, 249, 249, 0.2), 
+    4px 3px 8px rgba(50, 50, 50, 0.3); 
+  }
+ 
+  
+  .red-button {
+    position: absolute;
+    background-color: rgb(255, 9, 9);
+    top: 40px;
+    border: 2px solid #ddd;
+
+    left: 60px;
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    
+  }
+  
+  .red-button.opaque {
+    opacity: 0.5; /* Hace que el botón rojo sea opaco cuando el tiempo está corriendo */
+  }
+  
+  .green-button-rgb {
+    position: absolute;
+    background-color: rgba(224, 228, 226, 0.508);
+    top: 40px;
+    left: 294px;
+    border-radius: 50%;
+    border: 2px solid #ddd;
+    width: 80px;
+    height: 80px;
+  }
+
+  .green-button-rgb.active {
+    background: linear-gradient(335deg, #27690d, #bfdb44); /* Degradado para dar efecto de volumen */
+  }
+
+  .green-button {
+    position: absolute;
+    background-color: rgba(224, 228, 226, 0.508);
+    top: 40px;
+    left: 294px;
+    border-radius: 50%;
+    border: 2px solid #ddd;
+    width: 80px;
+    height: 80px;
+  }
+
+  .green-button.finish {
+    background: #27690d/* Degradado para dar efecto de volumen */
+  }
+  
+  .yellow-reset {
+    position: absolute;
+    background-color: rgb(226, 162, 52);
+    border-radius: 50%;
+    width: 65px;
+    height: 65px;
+    left: 1245px;
+    top: 634px;
+    border: 2px solid rgb(226, 162, 52);
+    box-shadow: inset -4px 4px 8px rgba(251, 249, 249, 0.2), 
+    4px 3px 8px rgba(50, 50, 50, 0.3);
+  }
+
+  .yellow-reset:hover {
+    background-color: rgb(226, 162, 52);
+    transform: scale(1.1);
+}
+
+  .control-panel {
+    position: absolute;
+    background: linear-gradient(335deg, #eddecc, #ffffff); /* Degradado para dar efecto de volumen */
+    top: 329px;
+    width: 450px;
+    height: 565px;
+    left: 1050px;
+    z-index: -40;
+    border-radius: 10px 10px 10px 10px; /* Bordes con formas más dinámicas */
+    border: 2px solid rgba(100, 100, 100, 0.5);
+    transform: rotate(0deg); /* Ligero ángulo inicial */
+    transform-origin: right center;
+    transition: transform 0.6s ease, background 0.3s ease; /* Suaviza la transición y cambio de color */
+    box-shadow: inset -4px 4px 8px rgba(0, 0, 0, 0.2), 
+                4px 3px 8px rgba(0, 0, 0, 0.3); /* Sombra interna y externa */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    overflow: hidden;
+}
+
+.table {
+    position: absolute;
+    background: linear-gradient(335deg, #c7c7c7, #c1c4c5);
+    top: 619px;
+    width: 590px;
+    height: 280px;
+    left: 115px;
+    border-radius: 15px;
+    border: 2px solid rgba(100, 100, 100, 0.5);
+    box-shadow: inset -4px 4px 8px rgba(0, 0, 0, 0.2), 
+                4px 3px 8px rgba(0, 0, 0, 0.3);
+    display: flex;
+    justify-content: center;
+        align-items: center;
+    max-height: 600px; /* Aumenta la altura máxima para que se vea más contenido */
+
+
+}
+
+.table2 {
+    background: linear-gradient(335deg, #c7c7c7, #c1c4c5);
+    width: fit-content;
+    height: 270px;
+    left: 135px;
+    border-radius: 15px;
+    border: 2px solid rgba(100, 100, 100, 0.5);
+    box-shadow: inset -4px 4px 8px rgba(0, 0, 0, 0.2), 
+                4px 3px 8px rgba(0, 0, 0, 0.3);
+    display: flex;
+    justify-content: start;
+    align-items: start;
+    max-height: 900px; /* Cambia este valor según lo que necesites */
+    overflow-y: auto;  /* Permite el desplazamiento vertical */
+}
+
+.teclado {
+    position: absolute;
+    background: linear-gradient(335deg, #c7c7c7, #c1c4c5);
+    top: 329px;
+    width: 350px;
+    height: 280px;
+    left: 200px;
+    border-radius: 15px;
+    border: 2px solid rgba(100, 100, 100, 0.5);
+    box-shadow: inset -4px 4px 8px rgba(0, 0, 0, 0.2), 
+                4px 3px 8px rgba(0, 0, 0, 0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.numeric-keypad {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+}
+
+.keypad-button {
+    background-color: white;
+    color: rgb(218, 167, 67);
+    border: 2px solid #c1c4c5;
+    border-radius: 15%;
+    width: 80px;
+    height: 50px;
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    box-shadow: inset -4px 4px 8px rgba(251, 249, 249, 0.2), 
+                4px 3px 8px rgba(50, 50, 50, 0.3);
+    transition: all 0.2s ease;
+}
+
+.keypad-button:hover {
+    background-color: #f0f0f0;
+    transform: scale(1.1);
+}
+
+.special-button, .delete-button {
+    background-color: rgb(240, 240, 240);
+}
+
+.delete-button {
+    font-size: 28px;
+}
