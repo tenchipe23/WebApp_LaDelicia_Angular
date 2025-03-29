@@ -12,18 +12,19 @@ import { NavbarComponent } from '../../../../shared/navbar/navbar/navbar.compone
 import { ProductService } from '../../../../core/services/product.service';
 import { privateDecrypt } from 'crypto';
 import { Router } from '@angular/router';
+import {CopyrightComponent} from "../../../../shared/copyright/copyright.component";
+import {SidebarPanelComponent} from "../../../../shared/sidebar-panel/sidebar-panel.component";
 
 @Component({
   selector: 'app-products-panel',
   standalone: true,
   imports: [
-    FooterComponent,
-    NavbarComponent,
-    MenuComponent,
     ReactiveFormsModule,
     ProductTableComponent,
     NgIf,
-    CommonModule
+    CommonModule,
+    CopyrightComponent,
+    SidebarPanelComponent
   ],
   templateUrl: './products-panel.component.html',
   styleUrls: ['./products-panel.component.css']

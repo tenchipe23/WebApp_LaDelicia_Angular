@@ -14,7 +14,6 @@ export class NavbarComponent {
     { label: 'Productos', link: '/products', active: false },
     { label: 'Nosotros', link: '/about', active: false },
     { label: 'Contacto', link: '/contact', active: false },
-    { label: 'Horno', link: '/about', active: false },
     { label: 'Iniciar Sesión', link: '/login', active: false }
 
   ];

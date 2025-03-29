@@ -9,7 +9,6 @@ export const routes: Routes = [
   { path: 'contact', loadComponent: () => import('./features/contact_us/contactus/contactus.component').then(m => m.ContactusComponent) },
   { path: 'products', loadComponent: () => import('./features/products/products/products.component').then(m => m.ProductsComponent) },
   { path: 'forgot-password', loadComponent: () => import('./shared/forgotPassword/forgot-password/forgot-password.component').then(m => m.ForgotPasswordComponent) },
-  { path: 'cooking-timer', loadComponent: () => import('./features/cooking-timer/cooking-timer.component').then(m => m.CookingTimerComponent) },
   // Rutas Hijas del Panel de Control
   {
     path: 'control-panel',
@@ -21,11 +20,11 @@ export const routes: Routes = [
       { path: 'employees', loadComponent: () => import('./features/controlPanel/employeesPanel/employees/employees.component').then(m => m.EmployeesComponent), canActivate: [authGuard], data: { role: 'admin' } },
       { path: 'product-panel', loadComponent: () => import('./features/controlPanel/productsPanel/products-panel/products-panel.component').then(m => m.ProductsPanelComponent), canActivate: [authGuard], data: { role: 'admin' } },
       { path: 'users', loadComponent: () => import('./features/controlPanel/usersPanel/users/users.component').then(m => m.UsersComponent), canActivate: [authGuard], data: { role: 'admin' } },
-      { 
-        path: 'horno', 
-        loadComponent: () => import('./features/controlPanel/horno/horno.component').then(m => m.HornoComponent), 
-        canActivate: [authGuard], 
-        data: { role: 'admin' } 
+      {
+        path: 'cooking-timer',
+        loadComponent: () => import('./features/controlPanel/horno/horno.component').then(m => m.HornoComponent),
+        canActivate: [authGuard],
+        data: { role: 'admin' }
       }
     ]
   },
