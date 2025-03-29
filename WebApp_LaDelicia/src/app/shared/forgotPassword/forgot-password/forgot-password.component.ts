@@ -41,7 +41,7 @@ export class ForgotPasswordComponent implements OnInit {
   }
 
   redirectToLogin(): void {
-    this.router.navigate(['/login']); // Redirige programáticamente al login
+    this.router.navigate(['/login']);
   }
 
 }

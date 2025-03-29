@@ -29,7 +29,7 @@ export class ProductsComponent implements OnInit{
           id: product.id,
           name: product.name_product,
           price: product.price_product,
-          image: product.image || 'assets/panaderia_removebg_preview.png'
+          image: product.image || '../assets/images/pan_integral.png'
         }));
         this.isLoading = false;
       },

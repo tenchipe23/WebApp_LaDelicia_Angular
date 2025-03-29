@@ -1,40 +1,42 @@
-<div class="container p-4 my-3 mt-2">
-  <div class="row">
-    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-      <h2 class="text-center">Listado de Empleados</h2>
-      <table class="table table-light table-striped">
-        <thead>
-        <tr>
-          <th class="centrado">Nombre</th>
-          <th class="centrado">Primer apellido</th>
-          <th class="centrado">Segundo apellido</th>
-          <th class="centrado">Calle</th>
-          <th class="centrado">Ciudad</th>
-          <th class="centrado">Código Postal</th>
-          <th class="centrado">Teléfono</th>
-          <th class="centrado">Funciones</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr *ngFor="let employee of employees">
-          <td>{{ employee.name_employee }}</td>
-          <td>{{ employee.middle_name }}</td>
-          <td>{{ employee.last_name }}</td>
-          <td>{{ employee.street_address }}</td>
-          <td>{{ employee.city_address }}</td>
-          <td>{{ employee.postal_code }}</td>
-          <td>{{ employee.cellphone_number }}</td>
-          <td class="centrado">
-            <button type="button" class="btn btn-warning me-2" (click)="abrirModal(employee.id)">
-              Editar
-            </button>
-            <button class="btn btn-danger" (click)="abrirModalEliminar(employee.id)">
-              <i class="bi bi-trash"></i> Eliminar
-            </button>
-          </td>
-        </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
+<div class="table-responsive">
+  <table class="table table-hover table-bordered align-middle">
+    <thead class="table-light">
+    <tr>
+      <th class="text-center">Nombre</th>
+      <th class="text-center">Primer apellido</th>
+      <th class="text-center">Segundo apellido</th>
+      <th class="text-center">Calle</th>
+      <th class="text-center">Ciudad</th>
+      <th class="text-center">Código Postal</th>
+      <th class="text-center">Teléfono</th>
+      <th class="text-center">Funciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let employee of employees">
+      <td class="text-center">{{ employee.name_employee }}</td>
+      <td class="text-center">{{ employee.middle_name }}</td>
+      <td class="text-center">{{ employee.last_name }}</td>
+      <td class="text-center">{{ employee.street_address }}</td>
+      <td class="text-center">{{ employee.city_address }}</td>
+      <td class="text-center">{{ employee.postal_code }}</td>
+      <td class="text-center">{{ employee.cellphone_number }}</td>
+      <td class="text-center" style="white-space: nowrap;">
+        <button
+          type="button"
+          class="btn btn-warning btn-sm me-2"
+          (click)="abrirModal(employee.id)"
+        >
+          <i class="bi bi-pencil-square"></i> Editar
+        </button>
+        <button
+          class="btn btn-danger btn-sm"
+          (click)="abrirModalEliminar(employee.id)"
+        >
+          <i class="bi bi-trash"></i> Eliminar
+        </button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
 </div>

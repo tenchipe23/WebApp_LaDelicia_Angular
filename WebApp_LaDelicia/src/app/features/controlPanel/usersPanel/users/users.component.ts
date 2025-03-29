@@ -1,39 +1,40 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from '../../../../core/services/user.service';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
-import { ToastrService } from "ngx-toastr";
-import { FooterComponent } from "../../../../shared/footer/footer/footer.component";
-import { NavbarComponent } from "../../../../shared/navbar/navbar/navbar.component";
-import { NgIf } from "@angular/common";
-import { UserTableComponent } from "../../../../shared/tables/user-table/user-table.component";
-import { MenuComponent } from "../../../../shared/menu/menu/menu.component";
-import { Modal } from "bootstrap";
-import { PanelNavbarComponent } from '../../../../shared/panel-navbar/panel-navbar.component';
-import { ClientTableComponent } from '../../../../shared/tables/client-table/client-table.component';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import { Modal } from 'bootstrap';
+import { UserService } from "../../../../core/services/user.service";
+import {FooterComponent} from "../../../../shared/footer/footer/footer.component";
+import {MenuComponent} from "../../../../shared/menu/menu/menu.component";
+import {UserTableComponent} from "../../../../shared/tables/user-table/user-table.component";
+import {NgIf} from "@angular/common";
+import {NavbarComponent} from "../../../../shared/navbar/navbar/navbar.component";
+import {CopyrightComponent} from "../../../../shared/copyright/copyright.component";
+import {SidebarPanelComponent} from "../../../../shared/sidebar-panel/sidebar-panel.component";
 
 @Component({
   selector: 'app-users',
-  standalone: true,
   templateUrl: './users.component.html',
+  styleUrls: ['./users.component.scss'],
   imports: [
-  ReactiveFormsModule,
-  FooterComponent,
-  MenuComponent, NavbarComponent,
-  UserTableComponent,
-  NgIf],
-  styleUrl: './users.component.css'
+    FooterComponent,
+    MenuComponent,
+    UserTableComponent,
+    NgIf,
+    ReactiveFormsModule,
+    NavbarComponent,
+    CopyrightComponent,
+    SidebarPanelComponent
+  ],
+  standalone: true
 })
 export class UsersComponent implements OnInit {
-
   users: any[] = [];
   userForm!: FormGroup;
-  selectedUser: any = null; // Si es nulo se agrega, si no se edita
+  selectedUser: any = null;
   userIdToDelete: number | null = null;
 
   constructor(
     private fb: FormBuilder,
-    private userService: UserService,
-    private toastr: ToastrService
+    private userService: UserService
   ) {}
 
   ngOnInit(): void {
@@ -43,121 +44,98 @@ export class UsersComponent implements OnInit {
 
   initializeForm(): void {
     this.userForm = this.fb.group({
-      name: ['', Validators.required],
-      first_surname: ['', Validators.required],
-      last_surname: ['', Validators.required],
-      phone_number: ['', [Validators.required, Validators.pattern('^[0-9]+$')]],
-      email: ['', [Validators.required, Validators.email]],
-      username: ['', Validators.required],
-      password: ['', Validators.required],
-     
+      name: ['', [ Validators.required, Validators.minLength(2), Validators.maxLength(50),
+        Validators.pattern('^[a-zA-Zà-ÿÀ-Ÿ\\s.-]{2,50}$') ]],
+      first_surname: ['', [ Validators.required, Validators.minLength(2), Validators.maxLength(50),
+        Validators.pattern('^[a-zA-Zà-ÿÀ-Ÿ\\s.-]{2,50}$') ]],
+      last_surname: ['', [ Validators.minLength(2), Validators.maxLength(50),
+        Validators.pattern('^[a-zA-Zà-ÿÀ-Ÿ\\s.-]{2,50}$') ]],
+      phone_number: ['', [ Validators.required, Validators.minLength(10), Validators.maxLength(10), Validators.pattern('^[0-9]+$') ]],
+      email: ['', [ Validators.required, Validators.email, Validators.minLength(10), Validators.maxLength(60),
+        Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'),
+         ]],
+      username: ['', [ Validators.required, Validators.minLength(1), Validators.maxLength(30),
+        Validators.pattern('^[a-zA-Z0-9._@#-]{3,32}$') ]],
+      password: ['',[ Validators.required, Validators.minLength(6), Validators.maxLength(20),
+        Validators.pattern('^[a-zA-Z0-9._@#-]{6,10}$') ]]
     });
   }
 
   loadUsers(): void {
     this.userService.getUsers().subscribe({
-      next: (data: any) => {
-        console.log('Datos obtenidos de la API:', data);
-
-        // Verificamos que data.data sea un array (según la nueva estructura)
-        if (!data || !Array.isArray(data.data)) {
-          console.error("Error: La respuesta de la API no contiene una lista de usuarios válidos.", data);
-          this.users = [];
-          return;
-        }
-
-        // Convertimos cada elemento { user: {...}, auth: {...}, client: {...} }
-        // en un objeto plano que la tabla entienda.
-        this.users = data.data.map((elem: any) => {
-          const authData = elem.auth || {};
-          const userData = elem.user || {};
-          const clientData = elem.client || {};
-
+      next: (res) => {
+        const dataArr: any[] = res.data || [];
+        const all = dataArr.map((item: any) => {
+          const userObj: any = item.user || {};
+          const authObj: any = item.auth || {};
           return {
-            // ID real para editar/eliminar
-            id: userData.id || '',
-
-            // Campos que estaban en 'user'
-            name: userData.name || '',
-            first_surname: userData.first_surname || '',
-            last_surname: userData.last_surname || '',
-            phone_number: userData.phone_number || '',
-
-            // Campos que estaban en 'auth'
-            email: authData.email || '',
-            username: authData.username || '',
-            role: authData.role || '',
-
-            // Campos que estaban en 'client'
-            city: clientData.city || '',
-            date_of_birth: clientData.date_of_birth || '',
-            postal_code: clientData.postal_code || '',
-            id_preferred_payment_method: clientData.id_preferred_payment_method || ''
+            id: userObj.id,
+            name: userObj.name,
+            first_surname: userObj.first_surname,
+            last_surname: userObj.last_surname,
+            phone_number: userObj.phone_number,
+            email: authObj.email,
+            username: authObj.username,
+            password: '' // no se pasa la contraseña real
           };
         });
+
+        this.users = all;
       },
-      error: (error) => {
-        console.error('Error al obtener usuarios:', error);
+      error: (err) => {
+        console.error('Error al cargar usuarios:', err);
         this.users = [];
       }
     });
   }
 
   addUser(): void {
-    if (this.userForm.invalid) {
-      this.toastr.warning('Por favor, complete todos los campos correctamente.', 'Advertencia');
-      return;
-    }
+    if (this.userForm.invalid) return;
 
-    const userData = { ...this.userForm.value };
-
-    this.userService.createUser(userData).subscribe({
-      next: (response) => {
-        this.toastr.success('Usuario agregado exitosamente', 'Éxito');
-        this.loadUsers(); // Recargar la lista de usuarios
+    const formData = this.userForm.value;
+    this.userService.createUser(formData).subscribe({
+      next: () => {
         this.userForm.reset();
+        this.loadUsers();
       },
-      error: (error) => {
-        this.toastr.error('Error al agregar usuario', 'Error');
-        console.error('Error en agregar usuario:', error);
+      error: (err) => {
+        console.error('Error al crear usuario:', err);
       }
     });
   }
 
-  editUser(user: any): void {
-    this.selectedUser = user;
+  editUser(userData: any): void {
+    this.selectedUser = userData;
     this.userForm.patchValue({
-      ...user,
-      city: user.city,
-      date_of_birth: user.date_of_birth,
-      postal_code: user.postal_code,
-      id_preferred_payment_method: user.id_preferred_payment_method
+      name: userData.name,
+      first_surname: userData.first_surname,
+      last_surname: userData.last_surname,
+      phone_number: userData.phone_number,
+      email: userData.email,
+      username: userData.username,
+      password: '' // no se pasa la real
     });
   }
 
   updateUser(): void {
     if (!this.selectedUser) return;
+    if (this.userForm.invalid) return;
 
-    const updatedUser = { ...this.selectedUser, ...this.userForm.value };
-
-    this.userService.updateUser(this.selectedUser.id, updatedUser).subscribe({
+    const updatedData = this.userForm.value;
+    this.userService.updateUser(this.selectedUser.id, updatedData).subscribe({
       next: () => {
-        this.toastr.success('Usuario actualizado correctamente', 'Éxito');
-        this.loadUsers();
         this.selectedUser = null;
         this.userForm.reset();
+        this.loadUsers();
       },
-      error: (error) => {
-        this.toastr.error('Error al actualizar usuario', 'Error');
-        console.error('Error en actualizar usuario:', error);
+      error: (err) => {
+        console.error('Error al actualizar usuario:', err);
       }
     });
   }
 
   confirmDelete(userId: number): void {
     this.userIdToDelete = userId;
-
-    // Abre la modal (id="deleteUserModal") con la API de Bootstrap
     const modalElement = document.getElementById('deleteUserModal');
     if (modalElement) {
       const modalBootstrap = Modal.getOrCreateInstance(modalElement);
@@ -170,7 +148,6 @@ export class UsersComponent implements OnInit {
 
     this.userService.deleteUser(this.userIdToDelete).subscribe({
       next: () => {
-        // Cerrar modal
         const modalElement = document.getElementById('deleteUserModal');
         if (modalElement) {
           const modalBootstrap = Modal.getInstance(modalElement);
@@ -178,7 +155,6 @@ export class UsersComponent implements OnInit {
             modalBootstrap.hide();
           }
         }
-        // Limpia variable y recarga la lista
         this.userIdToDelete = null;
         this.loadUsers();
       },
@@ -187,5 +163,9 @@ export class UsersComponent implements OnInit {
       }
     });
   }
-}
 
+  cancelEdit(): void {
+    this.selectedUser = null;
+    this.userForm.reset();
+  }
+}

@@ -12,18 +12,19 @@ import {CurrencyPipe, NgForOf} from "@angular/common";
 })
 export class ClientTableComponent {
 
- // @Input() clients: any[] = [];
- @Input() users: any[] = [];
- @Output() editUserEvent = new EventEmitter<any>();
-  @Output() deleteUserEvent = new EventEmitter<number>();
+  @Input() clients: any[] = [];
 
-  abrirModal(user: any): void {
-    this.editUserEvent.emit(user);
+  @Output() editClientEvent = new EventEmitter<any>();
+  @Output() deleteClientEvent = new EventEmitter<number>();
+
+  onEdit(clientData: any): void {
+    this.editClientEvent.emit(clientData);
   }
 
-  abrirModalEliminar(userId: number): void {
-    this.deleteUserEvent.emit(userId);
+  onDelete(clientId: number): void {
+    this.deleteClientEvent.emit(clientId);
   }
+
 }
 
 

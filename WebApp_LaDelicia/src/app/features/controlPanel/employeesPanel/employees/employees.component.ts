@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { EmployeeService } from '../../../../core/services/employee.service'; // Asegúrate de importar el servicio correcto
 import { EmployeeTableComponent } from "../../../../shared/tables/employee-table/employee-table.component";
 import { MenuComponent } from "../../../../shared/menu/menu/menu.component";
 import { FooterComponent } from "../../../../shared/footer/footer/footer.component";
-import { PanelNavbarComponent } from "../../../../shared/panel-navbar/panel-navbar.component";
 import {NgIf} from "@angular/common";
 import {ToastrService} from "ngx-toastr";
 import { Modal } from "bootstrap";
+import {EmployeeService} from "../../../../core/services/employee.service";
+import {SidebarPanelComponent} from "../../../../shared/sidebar-panel/sidebar-panel.component";
+import {CopyrightComponent} from "../../../../shared/copyright/copyright.component";
 
 @Component({
   selector: 'app-employees',
@@ -17,8 +18,9 @@ import { Modal } from "bootstrap";
     MenuComponent,
     FooterComponent,
     ReactiveFormsModule,
-    PanelNavbarComponent,
-    NgIf
+    NgIf,
+    SidebarPanelComponent,
+    CopyrightComponent
   ],
   templateUrl: './employees.component.html',
   styleUrls: ['./employees.component.css']
@@ -42,12 +44,14 @@ export class EmployeesComponent implements OnInit {
 
   initializeForm(): void {
     this.employeeForm = this.fb.group({
-      name_employee: ['', Validators.required],
-      middle_name: ['', Validators.required],
-      last_name: ['', Validators.required],
-      street_address: ['', Validators.required],
-      city_address: ['', Validators.required],
-      postal_code: ['', Validators.required],
+      name_employee: ['', [ Validators.required, Validators.minLength(2), Validators.maxLength(50),
+        Validators.pattern('^[a-zA-Zà-ÿÀ-Ÿ\\s.-]{2,50}$') ]],
+      middle_name: ['', [ Validators.required, Validators.minLength(2), Validators.maxLength(50),
+        Validators.pattern('^[a-zA-Zà-ÿÀ-Ÿ\\s.-]{2,50}$') ]],
+      last_name: ['', [  ]],
+      street_address: ['', [  ]],
+      city_address: ['', [  ]],
+      postal_code: ['', [  ]],
       cellphone_number: ['', [Validators.required, Validators.pattern('^[0-9]+$')]]
     });
   }

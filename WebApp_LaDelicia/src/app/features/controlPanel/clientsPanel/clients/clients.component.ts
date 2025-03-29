@@ -1,189 +1,176 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from '../../../../core/services/user.service';
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
-import { ToastrService } from "ngx-toastr";
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import { Modal } from 'bootstrap';
+import { ClientService } from "../../../../core/services/client.service";
+import {ClientTableComponent} from "../../../../shared/tables/client-table/client-table.component";
 import {FooterComponent} from "../../../../shared/footer/footer/footer.component";
 import {NavbarComponent} from "../../../../shared/navbar/navbar/navbar.component";
 import {NgIf} from "@angular/common";
-import {UserTableComponent} from "../../../../shared/tables/user-table/user-table.component";
 import {MenuComponent} from "../../../../shared/menu/menu/menu.component";
-import {Modal} from "bootstrap";
-import { ClientTableComponent } from '../../../../shared/tables/client-table/client-table.component';
+import {CopyrightComponent} from "../../../../shared/copyright/copyright.component";
+import {SidebarPanelComponent} from "../../../../shared/sidebar-panel/sidebar-panel.component";
 
 @Component({
   selector: 'app-clients',
-  standalone: true,
-  imports: [ReactiveFormsModule, FooterComponent, MenuComponent, NavbarComponent, ClientTableComponent, NgIf],
   templateUrl: './clients.component.html',
-  styleUrl: './clients.component.css'
+  styleUrls: ['./clients.component.scss'],
+  imports: [
+    ClientTableComponent,
+    FooterComponent,
+    NavbarComponent,
+    NgIf,
+    ReactiveFormsModule,
+    MenuComponent,
+    CopyrightComponent,
+    SidebarPanelComponent
+  ],
+  standalone: true
 })
-export class ClientsComponent {
- clients: any[] = [];
-   clientForm!: FormGroup;
-   selectedClient: any = null; // si es nulo se agrega, si no se edita
-   userIdToClient: number | null = null;
- 
-   constructor(
-     private fb: FormBuilder,
-     private userService: UserService,
-     private toastr: ToastrService
-   ) {}
- 
-   ngOnInit(): void {
-     this.initializeForm();
-     this.loadUsers();
-   }
- 
-   initializeForm(): void {
-     this.clientForm = this.fb.group({
-      name: ['', Validators.required],
-      first_surname: ['', Validators.required],
-      last_surname: ['', Validators.required],
-       city: ['', Validators.required],
-       date_of_birth: ['', Validators.required],
-       postal_code: ['', Validators.required],
-       phone_number: ['', [Validators.required, Validators.pattern('^[0-9]+$')]],
-       email: ['', [Validators.required, Validators.email]],
-       username: ['', Validators.required],
-       password:['', Validators.required]
-     });
-   }
- 
- 
-   loadUsers(): void {
-    this.userService.getUsers().subscribe({
-      next: (data: any) => {
-        console.log('Datos obtenidos de la API:', data);
-  
-        // 1. Verificamos que data.data sea un array (según la nueva estructura)
-        if (!data || !Array.isArray(data.data)) {
-          console.error("Error: La respuesta de la API no contiene una lista de usuarios válidos.", data);
-          this.clients = [];
-          return;
-        }
-  
-        // 2. Convertimos cada elemento { user: {...}, auth: {...}, client: {...} }
-        //    en un objeto plano que la tabla entienda.
-        this.clients = data.data.map((elem: any) => {
-          const authData = elem.auth || {};
-          const userData = elem.user || {};
-          const clientData = elem.client || {};
-  
+export class ClientsComponent implements OnInit {
+  clients: any[] = [];
+  clientForm!: FormGroup;
+  selectedClient: any = null;
+  clientIdToDelete: number | null = null;
+
+  constructor(
+    private fb: FormBuilder,
+    private clientService: ClientService
+  ) {}
+
+  ngOnInit(): void {
+    this.initializeForm();
+    this.loadClients();
+  }
+
+  initializeForm(): void {
+    this.clientForm = this.fb.group({
+      name: ['', [ Validators.required, Validators.minLength(2), Validators.maxLength(50),
+        Validators.pattern('^[a-zA-Zà-ÿÀ-Ÿ\\s.-]{2,50}$') ]],
+      first_surname: ['', [ Validators.required, Validators.minLength(2), Validators.maxLength(50),
+        Validators.pattern('^[a-zA-Zà-ÿÀ-Ÿ\\s.-]{2,50}$') ]],
+      last_surname: ['', [ Validators.minLength(2), Validators.maxLength(50),
+        Validators.pattern('^[a-zA-Zà-ÿÀ-Ÿ\\s.-]{2,50}$') ]],
+      phone_number: ['', [ Validators.required, Validators.minLength(10), Validators.maxLength(10), Validators.pattern('^[0-9]+$') ]],
+      email: ['', [ Validators.required, Validators.email, Validators.minLength(10), Validators.maxLength(60),
+        Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$') ]],
+      username: ['',[ Validators.required, Validators.minLength(1), Validators.maxLength(30),
+        Validators.pattern('^[a-zA-Z0-9._@#-]{3,32}$') ]],
+      password: ['',[ Validators.required, Validators.minLength(6), Validators.maxLength(20),
+        Validators.pattern('^[a-zA-Z0-9._@#-]{6,10}$') ]],
+      city: ['', [ Validators.required, Validators.minLength(2), Validators.maxLength(100),
+        Validators.pattern('^[a-zA-Zà-ÿÀ-Ÿ\\s.-]{2,50}$') ]],
+      date_of_birth: ['', [ Validators.required,
+        Validators.pattern('^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$') ]],
+      postal_code: ['', [ Validators.required,
+        Validators.pattern('^[1-9]\\d{4}$') ]],
+      id_preferred_payment_method: [1]
+    });
+  }
+
+  loadClients(): void {
+    this.clientService.getClients().subscribe({
+      next: (res) => {
+        const dataArr: any[] = res.data || [];
+        const all = dataArr.map((item: any) => {
+          const userObj: any = item.user || {};
+          const authObj: any = item.auth || {};
+          const clientObj: any = item.client || {};
           return {
-            // ID real para editar/eliminar
-            id: userData.id || '',
-  
-            // Campos que estaban en 'user'
-            name: userData.name || '',
-            first_surname: userData.first_surname || '',
-            last_surname: userData.last_surname || '',
-            phone_number: userData.phone_number || '',
-  
-            // Campos que estaban en 'auth'
-            email: authData.email || '',
-            username: authData.username || '',
-            role: authData.role || '',
-  
-            // Campos que estaban en 'client'
-            city: clientData.city || '',
-            date_of_birth: clientData.date_of_birth || '',
-            postal_code: clientData.postal_code || '',
-            id_preferred_payment_method: clientData.id_preferred_payment_method || ''
+            id: userObj.id,
+            name: userObj.name,
+            first_surname: userObj.first_surname,
+            last_surname: userObj.last_surname,
+            phone_number: userObj.phone_number,
+            email: authObj.email,
+            username: authObj.username,
+            password: '',
+            city: clientObj.city,
+            date_of_birth: clientObj.date_of_birth,
+            postal_code: clientObj.postal_code,
+            id_preferred_payment_method: clientObj.id_preferred_payment_method
           };
         });
+        this.clients = all.filter((c: any) => c.role !== 'admin');
       },
-      error: (error) => {
-        console.error('Error al obtener usuarios:', error);
-        this.clients = [];
-      }
-    });
-  }
-  
-  
- 
- 
-  addUser(): void {
-    if (this.clientForm.invalid) {
-      this.toastr.warning('Por favor, complete todos los campos correctamente.', 'Advertencia');
-      return;
-    }
-
-    const userData = { ...this.clientForm.value };
-
-    this.userService.createUser(userData).subscribe({
-      next: (response) => {
-        this.toastr.success('Usuario agregado exitosamente', 'Éxito');
-        this.loadUsers(); // Recargar la lista de usuarios
-        this.clientForm.reset();
-      },
-      error: (error) => {
-        this.toastr.error('Error al agregar usuario', 'Error');
-        console.error('Error en agregar usuario:', error);
-      }
+      error: (err) => console.error('Error al cargar clientes:', err)
     });
   }
 
-  editUser(user: any): void {
-    this.selectedClient = user;
-    this.clientForm.patchValue({
-      ...user,
-      city: user.city,
-      date_of_birth: user.date_of_birth,
-      postal_code: user.postal_code,
-      id_preferred_payment_method: user.id_preferred_payment_method
-    });
-  }
+  addClient(): void {
+    if (this.clientForm.invalid) return;
+    const formData = this.clientForm.value;
 
-  updateUser(): void {
-    if (!this.selectedClient) return;
-
-    const updatedUser = { ...this.selectedClient, ...this.clientForm.value };
-
-    this.userService.updateUser(this.selectedClient.id, updatedUser).subscribe({
+    this.clientService.createClient(formData).subscribe({
       next: () => {
-        this.toastr.success('Usuario actualizado correctamente', 'Éxito');
-        this.loadUsers();
+        this.clientForm.reset();
+        this.loadClients();
+      },
+      error: (err) => console.error('Error al agregar cliente:', err)
+    });
+  }
+
+  editClient(clientData: any): void {
+    this.selectedClient = clientData;
+    this.clientForm.patchValue({
+      name: clientData.name,
+      first_surname: clientData.first_surname,
+      last_surname: clientData.last_surname,
+      phone_number: clientData.phone_number,
+      email: clientData.email,
+      username: clientData.username,
+      password: '',
+      city: clientData.city,
+      date_of_birth: clientData.date_of_birth,
+      postal_code: clientData.postal_code,
+      id_preferred_payment_method: clientData.id_preferred_payment_method
+    });
+  }
+
+  updateClient(): void {
+    if (!this.selectedClient) return;
+    if (this.clientForm.invalid) return;
+
+    const updatedData = this.clientForm.value;
+    this.clientService.updateClient(this.selectedClient.id, updatedData).subscribe({
+      next: () => {
         this.selectedClient = null;
         this.clientForm.reset();
+        this.loadClients();
       },
-      error: (error) => {
-        this.toastr.error('Error al actualizar usuario', 'Error');
-        console.error('Error en actualizar usuario:', error);
-      }
+      error: (err) => console.error('Error al actualizar cliente:', err)
     });
   }
 
-  confirmDelete(userId: number): void {
-    this.userIdToClient = userId;
-
-    // Abre la modal (id="deleteUserModal") con la API de Bootstrap
-    const modalElement = document.getElementById('deleteUserModal');
-    if (modalElement) {
-      const modalBootstrap = Modal.getOrCreateInstance(modalElement);
+  confirmDelete(clientId: number): void {
+    this.clientIdToDelete = clientId;
+    const modalEl = document.getElementById('deleteClientModal');
+    if (modalEl) {
+      const modalBootstrap = Modal.getOrCreateInstance(modalEl);
       modalBootstrap.show();
     }
   }
 
-  deleteUser(): void {
-    if (!this.userIdToClient) return;
+  deleteClient(): void {
+    if (!this.clientIdToDelete) return;
 
-    this.userService.deleteUser(this.userIdToClient).subscribe({
+    this.clientService.deleteClient(this.clientIdToDelete).subscribe({
       next: () => {
-        // Cerrar modal
-        const modalElement = document.getElementById('deleteUserModal');
-        if (modalElement) {
-          const modalBootstrap = Modal.getInstance(modalElement);
+        const modalEl = document.getElementById('deleteClientModal');
+        if (modalEl) {
+          const modalBootstrap = Modal.getInstance(modalEl);
           if (modalBootstrap) {
             modalBootstrap.hide();
           }
         }
-        // Limpia variable y recarga la lista
-        this.userIdToClient = null;
-        this.loadUsers();
+        this.clientIdToDelete = null;
+        this.loadClients();
       },
-      error: (err) => {
-        console.error('Error al eliminar usuario:', err);
-      }
+      error: (err) => console.error('Error al eliminar cliente:', err)
     });
+  }
+
+  cancelEdit(): void {
+    this.selectedClient = null;
+    this.clientForm.reset();
   }
 }

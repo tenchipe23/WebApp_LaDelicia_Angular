@@ -3,7 +3,7 @@
   style="transition: all 0.3s ease;"
 >
   <div class="container">
-    <a class="navbar-brand d-flex align-items-center">
+    <a class="navbar-brand d-flex align-items-center" href="#">
       <img
         src="assets/panaderia_removebg_preview.png"
         alt="Logo"

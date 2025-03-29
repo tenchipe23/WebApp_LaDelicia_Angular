@@ -9,6 +9,8 @@ import { ToastrService } from "ngx-toastr";
 import { CommonModule, NgIf } from "@angular/common";
 import { Modal } from "bootstrap";
 import { NavbarComponent } from '../../../../shared/navbar/navbar/navbar.component';
+import {CopyrightComponent} from "../../../../shared/copyright/copyright.component";
+import {SidebarPanelComponent} from "../../../../shared/sidebar-panel/sidebar-panel.component";
 
 @Component({
   selector: 'app-products-panel',
@@ -20,7 +22,9 @@ import { NavbarComponent } from '../../../../shared/navbar/navbar/navbar.compone
     ReactiveFormsModule,
     ProductTableComponent,
     NgIf,
-    CommonModule
+    CommonModule,
+    CopyrightComponent,
+    SidebarPanelComponent
   ],
   templateUrl: './products-panel.component.html',
   styleUrls: ['./products-panel.component.css']
@@ -28,6 +32,7 @@ import { NavbarComponent } from '../../../../shared/navbar/navbar/navbar.compone
 export class ProductsPanelComponent implements OnInit {
 
   products: any[] = [];
+  sidebarOpen = false;
   productForm!: FormGroup;
   selectedProduct: any = null; // Si es nulo se agrega, si no se edita
   productIdToDelete: number | null = null;
@@ -202,4 +207,9 @@ export class ProductsPanelComponent implements OnInit {
       this.productForm.get('image')?.setErrors(null); // Limpia los errores
     }
   }
+
+  toggleSidebar() {
+    this.sidebarOpen = !this.sidebarOpen;
+  }
+
 }

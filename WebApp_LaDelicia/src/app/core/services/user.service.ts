@@ -35,7 +35,7 @@ export class UserService {
     const token = sessionStorage.getItem('authToken');
     return new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}` // Aseguramos que el token se envía correctamente
+      'Authorization': `Bearer ${token}`
     });
   }
 

@@ -11,6 +11,7 @@ export class AuthService {
   //Url de la api para realizar la autenticación de los usuarios
   private baseUrl = environment.authServiceUrl;
   //  private apiUrl = 'https://6236-189-161-134-145.ngrok-free.app';
+  // private token: string | null = null;
 
   constructor(private http: HttpClient, private router: Router) { }
 
