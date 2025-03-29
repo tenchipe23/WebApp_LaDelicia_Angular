@@ -20,6 +20,12 @@ export const routes: Routes = [
       { path: 'employees', loadComponent: () => import('./features/controlPanel/employeesPanel/employees/employees.component').then(m => m.EmployeesComponent), canActivate: [authGuard], data: { role: 'admin' } },
       { path: 'product-panel', loadComponent: () => import('./features/controlPanel/productsPanel/products-panel/products-panel.component').then(m => m.ProductsPanelComponent), canActivate: [authGuard], data: { role: 'admin' } },
       { path: 'users', loadComponent: () => import('./features/controlPanel/usersPanel/users/users.component').then(m => m.UsersComponent), canActivate: [authGuard], data: { role: 'admin' } },
+      { 
+        path: 'horno', 
+        loadComponent: () => import('./features/controlPanel/horno/horno.component').then(m => m.HornoComponent), 
+        canActivate: [authGuard], 
+        data: { role: 'admin' } 
+      }
     ]
   },
 

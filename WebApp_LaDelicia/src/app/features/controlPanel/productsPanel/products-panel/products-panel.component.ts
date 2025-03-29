@@ -9,6 +9,9 @@ import { ToastrService } from "ngx-toastr";
 import { CommonModule, NgIf } from "@angular/common";
 import { Modal } from "bootstrap";
 import { NavbarComponent } from '../../../../shared/navbar/navbar/navbar.component';
+import { ProductService } from '../../../../core/services/product.service';
+import { privateDecrypt } from 'crypto';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-products-panel',
@@ -35,7 +38,9 @@ export class ProductsPanelComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private cloudinaryService: CloudinaryService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private productService: ProductService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -82,21 +87,60 @@ export class ProductsPanelComponent implements OnInit {
       this.toastr.warning('Por favor, complete todos los campos correctamente.', 'Advertencia');
       return;
     }
-
+  
     const productData = { ...this.productForm.value };
     const imageFile = this.productForm.get('image')?.value;
-
-    // Verifica que el archivo sea una imagen
+  
     if (!imageFile || !imageFile.type.startsWith('image/')) {
-      this.toastr.warning('Por favor, selecciona un archivo de imagen válido (jpg, png, gif, etc.).', 'Advertencia');
+      this.toastr.warning('Por favor, selecciona un archivo de imagen válido.', 'Advertencia');
       return;
     }
-
+  
+    // Guardar el producto en localStorage
+    const storedProducts = JSON.parse(localStorage.getItem('storedProducts') || '[]');
+    storedProducts.push(productData);
+    localStorage.setItem('storedProducts', JSON.stringify(storedProducts));
+    console.log('Datos guardados en el local storage');
+  
+    // Enviar a la API principal
     this.cloudinaryService.createProduct(productData, imageFile).subscribe({
       next: (response) => {
+        console.log('📢 Producto creado:', response);
+  
+        if (!response.id) {
+          console.warn('⚠️ La API principal no devolvió un id válido.');
+          this.toastr.warning('El producto fue agregado, pero falta el ID.', 'Advertencia');
+          return;
+        }
+  
         this.toastr.success('Producto agregado exitosamente', 'Éxito');
-        this.loadProducts(); // Recargar la lista de productos
+        this.loadProducts();
         this.productForm.reset();
+  
+        // Enviar a la API secundaria con el id de la API principal
+        const breadData = {
+          id: response.id, // Usamos el id de la API principal (no _id de MongoDB)
+          name: productData.name_product,
+          ingredients: productData.ingredients,
+          bakingTime: productData.baking_time
+        };
+  
+        this.productService.createBread(breadData).subscribe({
+          next: (breadResponse: any) => {
+            console.log('📢 Respuesta de la API secundaria:', breadResponse);
+  
+            if (breadResponse && breadResponse._id) {
+              this.toastr.success(`Producto enviado a la API secundaria (ID: ${breadResponse._id})`, 'Éxito');
+            } else {
+              console.warn('⚠️ La API secundaria no devolvió un _id.');
+              this.toastr.warning('Producto enviado, pero sin _id.', 'Advertencia');
+            }
+          },
+          error: (error) => {
+            console.error('❌ Error al enviar producto a la API secundaria:', error);
+            this.toastr.error('No se pudo enviar a la API secundaria', 'Error');
+          }
+        });
       },
       error: (error) => {
         this.toastr.error('Error al agregar producto', 'Error');
@@ -104,6 +148,9 @@ export class ProductsPanelComponent implements OnInit {
       }
     });
   }
+  
+  
+  
 
   editProduct(productId: number): void {
     const product = this.products.find(p => p.id === productId);

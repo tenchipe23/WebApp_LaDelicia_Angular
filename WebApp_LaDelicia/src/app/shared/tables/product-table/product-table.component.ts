@@ -16,6 +16,8 @@ export class ProductTableComponent {
   @Input() products: any[] = [];
   @Output() deleteProduct = new EventEmitter<number>(); // Emite el ID del producto (number)
   @Output() updateProduct = new EventEmitter<number>(); // Emite el ID del producto (number)
+  @Output() cookProduct = new EventEmitter<number>(); // Nuevo evento
+
 
   onDelete(productId: number): void {
     this.deleteProduct.emit(productId); // Emite el ID del producto

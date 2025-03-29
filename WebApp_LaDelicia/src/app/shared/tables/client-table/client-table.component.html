@@ -13,7 +13,10 @@
           <th class="centrado">Usuario</th>
           <th class="centrado">Fecha de nacimiento</th>
           <th class="centrado">Ciudad</th>
+          <th class="centrado">Dirección</th>
           <th class="centrado">Código postal</th>
+          <th class="centrado">Metodo de pago</th>
+
           <th class="centrado">Funciones</th>
         </tr>
         </thead>
@@ -27,7 +30,10 @@
           <td>{{ user.username }}</td>
           <td> {{user.date_of_birth}} </td>
           <td> {{user.city}} </td>
+          <td> {{user.direction}} </td>
           <td> {{user.postal_code}} </td>
+          <td> {{user.id_preferred_payment_method}} </td>
+
           <td>
             <button class="btn btn-warning" (click)="abrirModal(user)">
               <i class="bi bi-pencil-square"></i> Editar

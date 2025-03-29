@@ -15,7 +15,7 @@ export class UserService {
     const headers = this.getAuthHeaders();
     return this.http.get(`${this.baseUrl}/getAll/users`, { headers });
   }
-
+    //http://localhost:3100/api/users/create/user/mobile
   createUser(userData: any): Observable<any> {
     const headers = this.getAuthHeaders();
     return this.http.post(`${this.baseUrl}/create/user/mobile`, userData, { headers });
